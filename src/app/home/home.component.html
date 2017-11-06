@@ -1,0 +1,63 @@
+<main role="main">
+  
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="row" *ngIf="login">
+          <div class="jumbotron col-sm-9" style="margin-left:1rem">
+            <div class="container">
+              <h1 class="display-3">Get Students Information </h1>
+              <p>This is a template for a simple blockchain example for demosttrating the open ledger student information</p>
+              <p></p>
+            </div>
+          </div>
+          <div id="myDIV" *ngIf="login" >
+            <h2 class="text-center" style="color:rgb(53, 49, 70);text-shadow: 1px 1px 1px  blue;font-family:cursive">Login</h2><hr>
+            <form class="form-group" style="padding:10px">
+              <input class="form-control mr-sm-2" type="text" placeholder="Username"><br>
+              <input class="form-control mr-sm-2" type="password" placeholder="Password"><br>
+              <input class="form-control mr-sm-2" type="text" placeholder="Org Name"><br>
+              <button class="btn btn-outline-success col-sm-12" type="submit" (click)="enroll()">Enroll into Network</button><br><br>
+              <span>Not registered... <a href="#" (click)="login = false" style="font-family:cursive">Register Here</a></span>
+            </form>
+          </div>
+        </div>  
+        <div class="container" *ngIf="login">
+          <!-- Example row of columns -->
+          <div class="row">
+            <div class="col-md-4">
+              <h2>Heading</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+              <h2>Heading</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+              <h2>Heading</h2>
+              <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+              <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            </div>
+          </div>
+  
+          <hr>
+  
+        </div> <!-- /container -->
+        <div *ngIf="!login" style="margin:0 20%;padding:20px;border-radius:10px;background-color:rgba(189, 183, 183, 0.336);box-shadow:2px 2px 2px;height:auto">
+          <h3 class="text-center"> Registration </h3>
+          <form class="form-group" style="padding:10px">
+            <input class="form-control mr-sm-2" type="text" placeholder="Enter your Unique id Number"><br>
+            <input class="form-control mr-sm-2" type="text" placeholder="Enter your username"><br>
+            <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-describedby="passHelp">
+              <small id="passHelp" class="form-text text-muted">Please copy the password somewhere safe..no forgot password option</small><br>
+            <input type="checkbox" (click)="getWorkForm()" (ngModal)="notStudent"> Working for college/school .<br><br>
+              <div  *ngIf="notStudent">
+              <input *ngIf="notStudent" class="form-control mr-sm-2" type="text" placeholder="Enter your Organisation name"><br>
+              <input *ngIf="notStudent" class="form-control mr-sm-5" type="text" placeholder="Enter your Designation"><br>
+              <input *ngIf="notStudent" class="form-control mr-sm-2" type="text" placeholder="Enter your Organisation name"><br>
+            </div>
+            <button class="btn btn-outline-success col-sm-12" type="submit">Register into Network</button><br><br>
+            <span>Already registered... <a href="#" (click)="login = true" style="font-family:cursive">Login Here</a></span>
+          </form>
+        </div>
+      </main>

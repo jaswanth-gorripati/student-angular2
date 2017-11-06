@@ -1,0 +1,33 @@
+
+.sidebar{
+    height: 100%;
+    border-right: 1px solid black;
+    font-family: cursive;
+    font-size: 1.2rem;
+    font-weight: normal;
+    border-radius: 5px;
+    position: fixed; 
+}
+.sidebar label{
+    margin: 10px;
+    width: 100%;
+    padding: 10px
+}
+.sidebar label:hover{
+   color: rgb(8, 10, 138);
+   font-weight: bolder;
+}
+.contentDivs{
+    margin-left: 30%; 
+    margin-top: 10px
+}
+.contentDivs button{
+    font-family: cursive;
+}
+.cursive{
+    font-family: cursive;
+}
+.active{
+    color: rgb(8, 10, 138);
+    font-weight: bolder;
+}

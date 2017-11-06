@@ -1,0 +1,90 @@
+<div class="row" style="min-height:100%">
+    <div class="sidebar col-sm-2">
+      <label (click)="request(0)" [ngClass]="{'active':forms[0]}">Education details</label><br>
+      <label (click)="request(1)" [ngClass]="{'active':forms[1]}">Work Details</label><br>
+      <label (click)="request(2)" [ngClass]="{'active':forms[2]}">Request To Add/Updare </label><br>
+       
+    </div>
+    <div class="contentDivs col-sm-7" *ngIf="forms[0]">
+      <h3 class="text-center cursive"> Education Details</h3><hr>
+      <form class="form-group" style="padding:10px">
+        <input class="form-control mr-sm-2" type="text" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
+        <small id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small><br>
+        <div class="row formDiv">
+          <input class="form-control col-sm-12 mr-sm-2" type="text" placeholder=" Enter College Name " ><br>
+          <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Enter Degree " ><br>
+          <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Enter score " ><br>
+          <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Enter Board " ><br>
+          <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Enter College code " ><br>
+        </div>
+        <div class="ll">
+          <button class="btn btn-outline-info col-sm-4 decider"  >Add</button>
+          <button class="btn btn-outline-info col-sm-4 decider1">Update</button>
+        </div> 
+      </form>
+    </div>
+    <div class="contentDivs col-sm-7" *ngIf="forms[1]">
+        <h3 class="text-center cursive"> Work Details</h3><hr>
+        <form class="form-group" style="padding:10px">
+          <input class="form-control mr-sm-2" type="text" placeholder=" Enter Employees Unique ID" aria-describedby="passHelp">
+          <small id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
+          <div class="row formDiv">
+            <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Working Started " ><br>
+            <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Working Started " ><br>
+            <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Enter Designation Name " ><br>
+            <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder="company name " ><br>
+            <input class="form-control col-sm-5 mr-sm-2 ll" type="text" placeholder=" location " ><br>
+        
+          </div>
+          <div class="ll">
+            <button class="btn btn-outline-info col-sm-4 decider"  >Add To Network</button>
+            <button class="btn btn-outline-info col-sm-4 decider1" >Update</button><hr>
+          </div>
+        </form>
+    </div>
+    <div class="contentDivs col-sm-6" *ngIf="forms[2]">
+      <h3 class="text-center cursive"> Request to Add/Update </h3><hr>
+      <div class=" row">
+        <div class="col-sm-6">
+            <input type="radio"  name="forForm" value="Edu" checked="checked" [(ngModel)] = "formof"> Add Education Details
+        </div>
+        <div class="col-sm-6">
+            <input type="radio"  name="forForm" value="work" [(ngModel)] = "formof"> Add Work Details
+        </div>
+      </div>
+      <hr>
+      
+      <form class="form-group" style="padding:10px" *ngIf="formof==='Edu'">
+          <input class="form-control mr-sm-2" type="text" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
+          <small id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small><br>
+          <div class="row formDiv">
+            <input class="form-control col-sm-12 mr-sm-2" type="text" placeholder=" Enter College Name " ><br>
+            <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Enter Degree " ><br>
+            <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Enter score " ><br>
+            <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Enter Board " ><br>
+            <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Enter College code " ><br>
+          </div>
+          <div class="ll">
+            <button class="btn btn-outline-info col-sm-4 decider"  > Request to Add</button>
+            <button class="btn btn-outline-info col-sm-4 decider1">Request to Update</button>
+          </div> 
+        </form>
+        <form class="form-group" style="padding:10px" *ngIf="formof==='work'">
+            <input class="form-control mr-sm-2" type="text" placeholder=" Enter Employees Unique ID" aria-describedby="passHelp">
+            <small id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
+            <div class="row formDiv">
+              <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Working Started " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Working Started " ><br>
+              <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Enter Designation Name " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder="company name " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 ll" type="text" placeholder=" location " ><br>
+          
+            </div>
+            <div class="ll">
+              <button class="btn btn-outline-info col-sm-4 decider"  >Request to Add</button>
+              <button class="btn btn-outline-info col-sm-4 decider1" >Request to Update</button><hr>
+            </div>
+          </form>
+    </div>
+  </div>
+  

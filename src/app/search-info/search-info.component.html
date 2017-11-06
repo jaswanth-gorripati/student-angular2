@@ -1,0 +1,43 @@
+<div class="container">
+  <div>
+    <form class="form-inline searchBar">
+        <input class="form-control col-sm-6" type="text" placeholder=" Enter Unique ID">
+        &nbsp;&nbsp;
+        <button class="btn btn-outline-success my-sm-2 decider">Search Information</button>
+    </form>
+    <div>
+        <table class="table table-bodered">
+            <tr><td class="text-center edu" colspan="4">Personal Details</td></tr>
+            <tr><td><label>Name </label></td><td>:</td><td>{{details.name}}</td></tr>
+            <tr><td><label>DOB</label></td><td>:</td><td>{{details.dob}}</td></tr>
+            <tr><td><label>Age</label></td><td>:</td><td>{{details.age}}</td></tr>
+            <tr><td><label>Father</label></td><td>:</td><td>{{details.father}}</td></tr>
+          </table>
+          <table class="table table-bodered">
+            <tr><td class="text-center edu" colspan="5">Education Details</td></tr>
+            <tr class="heading"> <td>Degree</td><td>Board</td><td>College Name</td><td>Score</td><td>College Code</td></tr>
+            <tr *ngFor="let edu of details.education" class="info">
+             
+               <td><span> {{edu.degree}} </span></td>
+               <td><span>{{edu.board}}</span></td>
+               <td><span>{{edu.clgName}}</span></td>
+               <td><span>{{edu.score}}</span></td>
+               <td><span>{{edu.clgCode}}</span></td>
+            </tr>
+        
+          </table>
+          <table class="table table-bodered">
+              <tr><td class="text-center edu" colspan="4">Work Details</td></tr>
+              <tr class="heading"><td>Designation</td><td>Company</td><td>Location</td><td>Working From</td>      </tr>
+              <tr *ngFor="let edu of details.work" class="info">
+                 <td><span> {{edu.designation}} </span></td>
+                 <td><span>{{edu.company}}</span></td>
+                 <td><span>{{edu.location}}</span></td>
+                 <td><span>{{edu.workingFrom}}</span></td>
+              </tr>
+          
+            </table>
+        
+    </div>
+  </div>
+</div>

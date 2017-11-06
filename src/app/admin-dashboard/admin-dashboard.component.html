@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="sidebar col-sm-3">
+    <label (click)="request(4)" [ngClass]="{'active':forms[4]}">Information of the Network</label><br>  
+    <label (click)="request(0)" [ngClass]="{'active':forms[0]}">Create Channel</label><br>
+    <label (click)="request(1)" [ngClass]="{'active':forms[1]}">Join Channel</label><br>
+    <label (click)="request(2)" [ngClass]="{'active':forms[2]}">Install Chaincodes</label><br>
+    <label (click)="request(3)" [ngClass]="{'active':forms[3]}">Instantiate chaincodes</label><br>
+  </div>
+  <div class="contentDivs col-sm-6" *ngIf="forms[0]" style="padding-bottom: 10%">
+    <h3 class="text-center cursive"> Create Channels </h3>
+    <form class="form-group" style="padding:10px">
+      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Channel Name"><br>
+      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Channel configuration file path " aria-describedby="passHelp">
+        <small id="passHelp" class="form-text text-muted">Please mention the channel.tx path in your workspace</small><br>
+      <button class="btn btn-outline-info col-sm-12" type="submit">Lets create a channel :)</button><br><br>
+  
+    </form>
+  </div>
+  <div class="contentDivs col-sm-6" *ngIf="forms[1]" style="padding-bottom: 10%">
+    <h3 class="text-center cursive"> Join Channels </h3>
+    <form class="form-group" style="padding:10px">
+      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Channel Name" aria-describedby="passHelp">
+        <small id="passHelp" class="form-text text-muted">Make sure channel exists , throws errors if not</small><br>
+      <input type="checkbox" value="peer1"> peer1 &nbsp;<input type="checkbox" value="peer2"> peer2 <br><br> 
+      <button class="btn btn-outline-info col-sm-12" type="submit">Join to the Channel</button><br><br>
+    </form>
+  </div>
+  <div class="contentDivs col-sm-6" *ngIf="forms[2]" style="padding-bottom: 10%">
+    <h3 class="text-center cursive"> Install Channels </h3>
+    <form class="form-group" style="padding:10px">
+      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Chaincode Name"><br>
+      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Chaincode Version"><br>
+      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Channel name"><br>
+      <label style="font-family:cursive" >Install on peers</label><br>
+      <input type="checkbox" value="peer1"> peer1 &nbsp;<input type="checkbox" value="peer2"> peer2 <br><br> 
+      
+      <button class="btn btn-outline-info col-sm-12" type="submit">Install chaincode on to peers</button><br><br>
+  
+    </form>
+  </div>
+  <div class="contentDivs col-sm-6" *ngIf="forms[3]" style="padding-bottom: 10%">
+    <h3 class="text-center cursive"> Instantiate Channels </h3>
+    <form class="form-group" style="padding:10px">
+      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Chaincode Name"><br>
+      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Chaincode Version"><br>
+      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Channel name"><br>
+      <label class="cursive" >Instantiate on peers</label><br>
+      <input type="checkbox" value="peer1"> peer1 &nbsp;<input type="checkbox" value="peer2"> peer2 <br><br> 
+      
+      <button class="btn btn-outline-info col-sm-12" type="submit">Instantiate the chaincode</button><br><br>
+  
+    </form>
+  </div>
+  <div class="contentDivs col-sm-6" *ngIf="forms[4]">
+    <h3 class="text-center cursive" style="padding-bottom: 70%"> Not generated much info to display ... stay tuned</h3>
+   
+  </div>
+</div>
