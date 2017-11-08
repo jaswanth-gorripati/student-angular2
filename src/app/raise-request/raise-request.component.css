@@ -56,3 +56,18 @@
 .ll{
     margin-top:25px;
 }
+.card{
+    border: 1rem solid black;
+}
+.panel-heading{
+    background-color: rgb(218, 212, 212);
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 1rem;
+}
+#eduForm{
+    margin-top:2%;
+}
+#eduDetails{
+    border: 2px rgb(218, 212, 212);
+}

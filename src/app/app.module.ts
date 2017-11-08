@@ -10,9 +10,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RaiseRequestComponent } from './raise-request/raise-request.component';
 import { SearchInfoComponent } from './search-info/search-info.component';
+import { HttpModule } from '@angular/http';
 
 import { UserInfoService } from './user-info.service';
 import { AuthGuardService } from './auth-guard.service';
+import { CreateArtifactsService } from "./create-artifacts.service";
+import { AddUpdateStudentDetailsService } from "./add-update-student-details.service";
 
 const appRoutes: Routes = [
   { path: 'login', component: HomeComponent },
@@ -34,13 +37,13 @@ const appRoutes: Routes = [
     SearchInfoComponent
   ],
   imports: [
-    BrowserModule , BrowserAnimationsModule,FormsModule,ReactiveFormsModule,
+    BrowserModule , BrowserAnimationsModule,FormsModule,ReactiveFormsModule,HttpModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } 
+      { enableTracing: false } 
     )
   ],
-  providers: [UserInfoService,AuthGuardService],
+  providers: [UserInfoService,AuthGuardService,CreateArtifactsService,AddUpdateStudentDetailsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

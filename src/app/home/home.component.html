@@ -11,11 +11,11 @@
           </div>
           <div id="myDIV" *ngIf="login" >
             <h2 class="text-center" style="color:rgb(53, 49, 70);text-shadow: 1px 1px 1px  blue;font-family:cursive">Login</h2><hr>
-            <form class="form-group" style="padding:10px">
-              <input class="form-control mr-sm-2" type="text" placeholder="Username"><br>
-              <input class="form-control mr-sm-2" type="password" placeholder="Password"><br>
-              <input class="form-control mr-sm-2" type="text" placeholder="Org Name"><br>
-              <button class="btn btn-outline-success col-sm-12" type="submit" (click)="enroll()">Enroll into Network</button><br><br>
+            <form class="form-group" style="padding:10px" [formGroup]="loginForm" (ngSubmit)="enroll($event)">
+              <input class="form-control mr-sm-2" formControlName="username" type="text" placeholder=" Username" required><br>
+              <input class="form-control mr-sm-2" formControlName="passkey" type="password" placeholder=" Password" required><br>
+              <input class="form-control mr-sm-2" formControlName="orgName" type="text" placeholder=" Org Name" required><br>
+              <button class="btn btn-outline-success col-sm-12" type="submit" [disabled]="loginForm.invalid" >Enroll into Network</button><br><br>
               <span>Not registered... <a href="#" (click)="login = false" style="font-family:cursive">Register Here</a></span>
             </form>
           </div>
@@ -45,18 +45,16 @@
         </div> <!-- /container -->
         <div *ngIf="!login" style="margin:0 20%;padding:20px;border-radius:10px;background-color:rgba(189, 183, 183, 0.336);box-shadow:2px 2px 2px;height:auto">
           <h3 class="text-center"> Registration </h3>
-          <form class="form-group" style="padding:10px">
-            <input class="form-control mr-sm-2" type="text" placeholder="Enter your Unique id Number"><br>
-            <input class="form-control mr-sm-2" type="text" placeholder="Enter your username"><br>
-            <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-describedby="passHelp">
+          <form class="form-group" style="padding:10px" [formGroup]="registerForm" (ngSubmit)="register($event)">
+            <input class="form-control mr-sm-2" formControlName="username" type="text" placeholder=" Enter your username"><br>
+            <input class="form-control mr-sm-2" formControlName="passkey" type="password" placeholder=" Password" aria-describedby="passHelp">
               <small id="passHelp" class="form-text text-muted">Please copy the password somewhere safe..no forgot password option</small><br>
-            <input type="checkbox" (click)="getWorkForm()" (ngModal)="notStudent"> Working for college/school .<br><br>
-              <div  *ngIf="notStudent">
-              <input *ngIf="notStudent" class="form-control mr-sm-2" type="text" placeholder="Enter your Organisation name"><br>
-              <input *ngIf="notStudent" class="form-control mr-sm-5" type="text" placeholder="Enter your Designation"><br>
-              <input *ngIf="notStudent" class="form-control mr-sm-2" type="text" placeholder="Enter your Organisation name"><br>
+            <!--<input type="checkbox" (click)="getWorkForm()" (ngModal)="notStudent"> Working for college/school .<br><br>-->
+              <div >
+              <input formControlName="orgName" class="form-control mr-sm-2" type="text" placeholder=" Enter your Organisation name"><br>
+              <input formControlName="position" class="form-control mr-sm-5" type="text" placeholder=" Enter your Designation"><br>
             </div>
-            <button class="btn btn-outline-success col-sm-12" type="submit">Register into Network</button><br><br>
+            <button class="btn btn-outline-success col-sm-12" type="submit"  [disabled]="registerForm.invalid">Register into Network</button><br><br>
             <span>Already registered... <a href="#" (click)="login = true" style="font-family:cursive">Login Here</a></span>
           </form>
         </div>

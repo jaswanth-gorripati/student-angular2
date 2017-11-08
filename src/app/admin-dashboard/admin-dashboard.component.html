@@ -8,46 +8,48 @@
   </div>
   <div class="contentDivs col-sm-6" *ngIf="forms[0]" style="padding-bottom: 10%">
     <h3 class="text-center cursive"> Create Channels </h3>
-    <form class="form-group" style="padding:10px">
-      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Channel Name"><br>
-      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Channel configuration file path " aria-describedby="passHelp">
+    <form class="form-group" style="padding:10px" [formGroup]="channelForm" (ngSubmit)="createChannel($event)">
+      <input class="form-control mr-sm-2" type="text" formControlName="channelName" placeholder=" Enter Channel Name"><br>
+      <input class="form-control mr-sm-2" type="text" formControlName="channelConfigPath" placeholder=" Enter Channel configuration file path " aria-describedby="passHelp">
         <small id="passHelp" class="form-text text-muted">Please mention the channel.tx path in your workspace</small><br>
-      <button class="btn btn-outline-info col-sm-12" type="submit">Lets create a channel :)</button><br><br>
+      <button class="btn btn-outline-info col-sm-12" type="submit" [disabled]="channelForm.invalid">Lets create a channel :)</button><br><br>
   
     </form>
   </div>
   <div class="contentDivs col-sm-6" *ngIf="forms[1]" style="padding-bottom: 10%">
     <h3 class="text-center cursive"> Join Channels </h3>
-    <form class="form-group" style="padding:10px">
-      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Channel Name" aria-describedby="passHelp">
+    <form class="form-group" style="padding:10px" [formGroup]="joinForm" (ngSubmit)="joinChannel($event)">
+      <input class="form-control mr-sm-2" formControlName="channelName" type="text" placeholder=" Enter Channel Name" aria-describedby="passHelp">
         <small id="passHelp" class="form-text text-muted">Make sure channel exists , throws errors if not</small><br>
-      <input type="checkbox" value="peer1"> peer1 &nbsp;<input type="checkbox" value="peer2"> peer2 <br><br> 
-      <button class="btn btn-outline-info col-sm-12" type="submit">Join to the Channel</button><br><br>
+      <input type="checkbox" value="peer1" formControlName="peer1"> peer1 &nbsp;<input formControlName="peer2" type="checkbox" value="peer2"> peer2 <br><br> 
+      <button class="btn btn-outline-info col-sm-12" type="submit" [disabled]="joinForm.invalid">Join to the Channel</button><br><br>
     </form>
   </div>
   <div class="contentDivs col-sm-6" *ngIf="forms[2]" style="padding-bottom: 10%">
-    <h3 class="text-center cursive"> Install Channels </h3>
-    <form class="form-group" style="padding:10px">
-      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Chaincode Name"><br>
-      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Chaincode Version"><br>
-      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Channel name"><br>
+    <h3 class="text-center cursive"> Install Chaincodes </h3>
+    <form class="form-group" style="padding:10px" [formGroup]="installForm" (ngSubmit)="installChaincode($event)">
+      <input class="form-control mr-sm-2" formControlName="chaincodeName" type="text" placeholder=" Enter Chaincode Name"><br>
+      <input class="form-control mr-sm-2" formControlName="chaincodeVersion" type="text" placeholder=" Enter Chaincode Version"><br>
+      <input class="form-control mr-sm-2" formControlName="chaincodePath" type="text" placeholder=" Enter Chaincode Path"><br>
       <label style="font-family:cursive" >Install on peers</label><br>
-      <input type="checkbox" value="peer1"> peer1 &nbsp;<input type="checkbox" value="peer2"> peer2 <br><br> 
+      <input type="checkbox" value="peer1" formControlName="peer1"> peer1 &nbsp;
+      <input type="checkbox" value="peer2" formControlName="peer2"> peer2 <br><br> 
       
-      <button class="btn btn-outline-info col-sm-12" type="submit">Install chaincode on to peers</button><br><br>
+      <button class="btn btn-outline-info col-sm-12"  type="submit">Install chaincode on to peers</button><br><br>
   
     </form>
   </div>
   <div class="contentDivs col-sm-6" *ngIf="forms[3]" style="padding-bottom: 10%">
-    <h3 class="text-center cursive"> Instantiate Channels </h3>
-    <form class="form-group" style="padding:10px">
-      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Chaincode Name"><br>
-      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Chaincode Version"><br>
-      <input class="form-control mr-sm-2" type="text" placeholder=" Enter Channel name"><br>
+    <h3 class="text-center cursive"> Instantiate Chaincode </h3>
+    <form class="form-group" style="padding:10px" [formGroup]="installForm" (ngSubmit)="instantiateForm($event)">
+        <input class="form-control mr-sm-2" formControlName="channelName" type="text" placeholder=" Enter channel Name"><br>
+      <input class="form-control mr-sm-2" formControlName="chaincodeName" type="text" placeholder=" Enter Chaincode Name"><br>
+      <input class="form-control mr-sm-2" formControlName="chaincodeVersion" type="text" placeholder=" Enter Chaincode Version"><br>
       <label class="cursive" >Instantiate on peers</label><br>
-      <input type="checkbox" value="peer1"> peer1 &nbsp;<input type="checkbox" value="peer2"> peer2 <br><br> 
+      <input type="checkbox" formControlName="peer1" value="peer1"> peer1 &nbsp;
+      <input type="checkbox" formControlName="peer2" value="peer2"> peer2 <br><br> 
       
-      <button class="btn btn-outline-info col-sm-12" type="submit">Instantiate the chaincode</button><br><br>
+      <button class="btn btn-outline-info col-sm-12"    type="submit">Instantiate the chaincode</button><br><br>
   
     </form>
   </div>
