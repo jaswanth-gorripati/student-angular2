@@ -16,3 +16,76 @@ table{
 .info{
     font-family: cursive;
 }
+
+
+.sidebar{
+    height: 100%;
+    border-right: 1px solid black;
+    font-family: cursive;
+    font-size: 1.1rem;
+    font-weight: normal;
+    border-radius: 5px;
+    position: fixed; 
+}
+.sidebar label{
+    margin: 10px;
+    width: 100%;
+    padding: 10px
+}
+.sidebar label:hover{
+   color: black;
+   font-weight: bolder;
+}
+.contentDivs{
+    margin-left: 25%; 
+    margin-top: 10px;
+}
+.contentDivs button{
+    font-family: cursive;
+}
+.cursive{
+    font-family: cursive;
+}
+.active{
+    color: black;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+.decider{
+    margin-left: 2%;
+}
+.decider1{
+    margin-left: 20%;
+}
+.btnActive{
+    background-color: #18242e;
+    color:#fff;
+}
+.btn-outline-success:active{
+    border: none !important;
+}
+.formDiv{
+    margin:10px 2px;
+}
+.lr{
+    margin-left:34px !important;
+    margin-top:25px;
+}
+.ll{
+    margin-top:25px;
+}
+.card{
+    border: 1rem solid black;
+}
+.panel-heading{
+    background-color: rgb(218, 212, 212);
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 1rem;
+}
+#eduForm{
+    margin-top:2%;
+}
+#eduDetails{
+    border: 2px rgb(218, 212, 212);
+}

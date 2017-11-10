@@ -18,6 +18,7 @@ export class RaiseRequestComponent implements OnInit {
     console.log(this.token);
     this.addOrUpdate.setToken(this.token);
     this.userName = this.userInfo.getUserName();
+    this.userName = this.userName.toUpperCase();
    }
 
   ngOnInit() {
@@ -46,59 +47,94 @@ export class RaiseRequestComponent implements OnInit {
   gotAddRequest = false;
   addWithPersonal = false;
   addEduDetails = false;
+  addEduIndex:any;
   addRequest(){
     this.setPeers();
     this.gotAddRequest = true;
     this.gotUpdateRequest =false;
-    this.isUniqueID.controls['args'].setValue([this.isUniqueID.controls.uniqueId.value]);
-    let submitForm = {"fcn":"getHistory","args":this.isUniqueID.controls.uniqueId.value}
+    this.isUniqueID.controls['args'].setValue([""+this.isUniqueID.controls.uniqueId.value+""]);
+    let submitForm = {"fcn":"getHistory","args":[this.isUniqueID.controls.uniqueId.value]}
     this.addOrUpdate.isStudentExists(this.isUniqueID.value,submitForm).subscribe(res =>{
       console.log("from add Request: ",res);
       if(res[0] != undefined){
         this.addEduDetails = true;
+        this.addEduIndex = res[res.length-1].StudentDetails.education.length-1;
       }else{
         this.addWithPersonal = true;
+        this.addEduIndex = 0;
       }
+      console.log("index :",this.addEduIndex)
       this.isValidRequest = true;
     })
   }
   gotUpdateRequest = false;
+  updateEduIndexes:any;
+  tempEduDetails:any;
   updateRequest(){
     this.setPeers();
     this.gotUpdateRequest = true;
     this.gotAddRequest = false;
     this.isUniqueID.controls['args'].setValue([this.isUniqueID.controls.uniqueId.value]);
-    let submitForm = {"fcn":"getHistory","args":this.isUniqueID.controls.uniqueId.value}
+    let submitForm = {"fcn":"getHistory","args":[this.isUniqueID.controls.uniqueId.value]}
     this.addOrUpdate.isStudentExists(this.isUniqueID.value,submitForm).subscribe(res =>{
       console.log("from add Request: ",res);
+      this.tempEduDetails = res;
       if(res[0] == undefined){
         alert("not found");
       }else{
-        this.addEduDetails = true;
-        let index = res.length - 1; 
-        this.removeEdu(0);
+       
+        
         /*this.addForm.controls['name'].setValue(res[index].StudentDetails.username);
         this.addForm.controls['dob'].setValue(res[index].StudentDetails.DateOfBirth)
         this.addForm.controls['gender'].setValue(res[index].StudentDetails.gender)*/
-        for(let i=0;i<res[index].StudentDetails.education.length;i++){
-          let form = this.fb.group({
-            degree:[res[index].StudentDetails.education[i].degree,Validators.required],
-            board:[res[index].StudentDetails.education[i].board,Validators.required],
-            collegeName: [res[index].StudentDetails.education[i].Institute, Validators.required],
-            completedYear: [""+res[index].StudentDetails.education[i].yearOfPassout+"", Validators.required],
-            score:[""+res[index].StudentDetails.education[i].score+"",Validators.required],
-            user:[res[index].StudentDetails.education[i].addedBy],
-            date:[res[index].StudentDetails.education[i].addedTime]
-          });
-          let control = <FormArray>this.addForm.controls['education'];
-          control.push(form);
-        }
       }
-      this.isValidRequest = true;
     })
+  }
+  eduToEdit:any;
+  getEduForm(){
+    let  isOk = false;
+    let index = this.tempEduDetails.length - 1; 
+    this.removeEdu(0);
+    this.addEduDetails = true;
+    console.log(this.tempEduDetails);
+    for(let i=0;i<this.tempEduDetails[index].StudentDetails.education.length;i++){
+      if(this.userName == this.tempEduDetails[index].StudentDetails.education[i].WhoCanupdate.userName && this.eduToEdit == this.tempEduDetails[index].StudentDetails.education[i].degree){
+        this.updateEduIndexes = i;
+        console.log(this.tempEduDetails[index].StudentDetails.education[i]);
+        let form = this.fb.group({
+          degree:[this.tempEduDetails[index].StudentDetails.education[i].degree,Validators.required],
+          board:[this.tempEduDetails[index].StudentDetails.education[i].board,Validators.required],
+          collegeName: [this.tempEduDetails[index].StudentDetails.education[i].Institute, Validators.required],
+          completedYear: [""+this.tempEduDetails[index].StudentDetails.education[i].yearOfPassout+"", Validators.required],
+          score:[""+this.tempEduDetails[index].StudentDetails.education[i].score+"",Validators.required],
+          user:[this.tempEduDetails[index].StudentDetails.education[i].addedBy],
+          date:[this.tempEduDetails[index].StudentDetails.education[i].addedTime]
+        });
+        let control = <FormArray>this.addForm.controls['education'];
+        control.push(form);
+        isOk = true;
+        this.isValidRequest =true;
+      }
+    }
+    
+    if(isOk == false){
+      alert("no Education details regarding "+this.eduToEdit+" degree");
+      this.cancel()
+    }
+    
   }
   isExists(event){
     console.log(this.isUniqueID.value);
+  }
+  cancel(){
+    this.addWithPersonal = false;
+    this.addEduDetails =false;
+    this.isValidRequest =false;
+    this.addForm.reset();
+    this.isValidRequest = false;
+    this.gotAddRequest = false;
+    this.gotUpdateRequest = false;
+    this.eduToEdit = "";
   }
   public addForm = this.fb.group({
     name:["",Validators.required],
@@ -157,13 +193,13 @@ export class RaiseRequestComponent implements OnInit {
         this.submitAdd(submitForm);
         setTimeout(()=>{
           submitForm.fcn = "cwcu";
-          submitForm.args = [this.isUniqueID.controls.uniqueId.value,"2","SCADMIN","jntu","admin"];
-          this.submitAdd(submitForm);
+          submitForm.args = [this.isUniqueID.controls.uniqueId.value,""+this.addEduIndex+"",this.userName,"jntu","admin"];
+          this.callCWCU(submitForm);
         },5000)
         
       }else if(this.addEduDetails){
         submitForm.fcn="addEducation";
-        submitForm.args.push(this.isUniqueID.controls.uniqueId.value)
+        submitForm.args.push(""+this.isUniqueID.controls.uniqueId.value+"")
         let temp = this.addForm.controls.education.value;
         console.log("temp:",temp)
         for(let i=0;i<temp.length;i++){
@@ -172,36 +208,59 @@ export class RaiseRequestComponent implements OnInit {
         this.submitAdd(submitForm);
         setTimeout(()=>{
           submitForm.fcn = "cwcu";
-          submitForm.args = [this.isUniqueID.controls.uniqueId.value,"2","SCADMIN","jntu","admin"];
-          this.submitAdd(submitForm);
+          submitForm.args = [this.isUniqueID.controls.uniqueId.value,""+this.addEduIndex+"",this.userName,"jntu","admin"];
+          this.callCWCU(submitForm);
         },5000)
       } 
       console.log(this.addForm.value)
       console.log(submitForm);
     }else{
-      let i =2;
+      let i =0;
       submitForm.fcn="updateEdu";
       let temp = this.addForm.controls.education.value;
-      submitForm.args.push(this.isUniqueID.controls.uniqueId.value,""+i+"",this.userName,temp[i].degree,temp[i].board,temp[i].collegeName,temp[i].completedYear,temp[i].score);
+      console.log(temp)
+      submitForm.args.push(this.isUniqueID.controls.uniqueId.value,""+this.updateEduIndexes+"",this.userName,temp[i].degree,temp[i].board,temp[i].collegeName,temp[i].completedYear,temp[i].score);
       this.submitAdd(submitForm)
+      this.addForm.controls.education.reset();
     }  
     
   }
+  Success = false;
+  callCWCU(form){
+    if(this.Success == true){
+      this.submitAdd(form);
+    }else{
+      setTimeout(()=> {
+        this.callCWCU(form);
+      }, 1000);
+    }
+  }
   submitAdd(submitForm){
+    this.Success = false;
     console.log("from submission",submitForm)
     this.addOrUpdate.addDetails(submitForm).subscribe(resp =>{
       console.log(resp);
-      this.addWithPersonal = false;
-      this.addEduDetails =false;
-      this.isValidRequest =false;
-      this.addForm.controls.education.reset();
+      this.clearAll();
       if(resp == ""){
-        alert("operation Succesful");
+        setTimeout(()=> {
+          this.Success= true;
+          alert("operation Succesful");
+        }, 1000);
       }else{
         alert(resp);
       }
       //this.addForm.reset();
     })
+  }
+  clearAll(){
+    this.addWithPersonal = false;
+    this.addEduDetails =false;
+    this.isValidRequest =false;
+    this.gotAddRequest = false;
+    this.gotUpdateRequest =false;
+    this.tempEduDetails = null;
+    this.updateEduIndexes = null;
+    this.addForm.controls.education.reset();
   }
   //[$scope.studentDetails.studentId,$scope.profilePicture,$scope.studentDetails.studentName,$scope.studentDetails.studentDOB,$scope.studentDetails.studentGender,$rootScope.userName,$rootScope.date,$scope.studentDetails.studentDegree,$scope.studentDetails.studentBoard,$scope.studentDetails.studentInstitute,$scope.studentDetails.studentPassedOut,$scope.studentDetails.studentScore,$rootScope.userName,$rootScope.date];
 

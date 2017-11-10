@@ -33,4 +33,13 @@ export class CreateArtifactsService {
   instantiateChaincode(formdata){
     return this.http.post('http://localhost:4000/channels/'+formdata.channelName+'/chaincodes',formdata,this.headers()).map(res => res);
   }
+  getChannelInfo(channelName){
+    return this.http.get('http://localhost:4000/channels/'+channelName+'',this.headers()).map(res => res.json());
+  }
+  chaincodeInfo(peer,type){
+    return this.http.get('http://localhost:4000/chaincodes?peer='+peer+'&&type='+type+'',this.headers()).map(res => res.text());
+  }
+  getChannels(formdata){
+    return this.http.get('http://localhost:4000/channels?peer='+formdata+'',this.headers()).map(res => res.json());
+  }
 }

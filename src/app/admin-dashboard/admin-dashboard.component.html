@@ -22,7 +22,7 @@
       <input class="form-control mr-sm-2" formControlName="channelName" type="text" placeholder=" Enter Channel Name" aria-describedby="passHelp">
         <small id="passHelp" class="form-text text-muted">Make sure channel exists , throws errors if not</small><br>
       <input type="checkbox" value="peer1" formControlName="peer1"> peer1 &nbsp;<input formControlName="peer2" type="checkbox" value="peer2"> peer2 <br><br> 
-      <button class="btn btn-outline-info col-sm-12" type="submit" [disabled]="joinForm.invalid">Join to the Channel</button><br><br>
+      <button class="btn btn-outline-info col-sm-12" type="submit" >Join to the Channel</button><br><br>
     </form>
   </div>
   <div class="contentDivs col-sm-6" *ngIf="forms[2]" style="padding-bottom: 10%">
@@ -55,6 +55,6 @@
   </div>
   <div class="contentDivs col-sm-6" *ngIf="forms[4]">
     <h3 class="text-center cursive" style="padding-bottom: 70%"> Not generated much info to display ... stay tuned</h3>
-   
+    <button class="btn btn-success" (click)="getInfo()">click For Info</button>
   </div>
 </div>

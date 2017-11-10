@@ -37,9 +37,9 @@ export class HomeComponent implements OnInit {
   login = true;
 
   public loginForm = this.fb.group({
-    username: ["", Validators.required],
-    passkey: ["", Validators.required],
-    orgName:["",[Validators.required]]
+    username: ["scadmin", Validators.required],
+    passkey: ["pass", Validators.required],
+    orgName:["org1",[Validators.required]]
   });
 
   public registerForm = this.fb.group({

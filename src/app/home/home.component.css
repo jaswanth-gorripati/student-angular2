@@ -20,3 +20,6 @@
 @keyframes mymove {
     50% {box-shadow: 8px 10px 15px rgb(24, 24, 26);}
 }
+main{
+    overflow-x: hidden;
+}

@@ -12,7 +12,7 @@
           <div id="myDIV" *ngIf="login" >
             <h2 class="text-center" style="color:rgb(53, 49, 70);text-shadow: 1px 1px 1px  blue;font-family:cursive">Login</h2><hr>
             <form class="form-group" style="padding:10px" [formGroup]="loginForm" (ngSubmit)="enroll($event)">
-              <input class="form-control mr-sm-2" formControlName="username" type="text" placeholder=" Username" required><br>
+              <input class="form-control mr-sm-2" formControlName="username" autofocus type="text" placeholder=" Username" required><br>
               <input class="form-control mr-sm-2" formControlName="passkey" type="password" placeholder=" Password" required><br>
               <input class="form-control mr-sm-2" formControlName="orgName" type="text" placeholder=" Org Name" required><br>
               <button class="btn btn-outline-success col-sm-12" type="submit" [disabled]="loginForm.invalid" >Enroll into Network</button><br><br>
@@ -24,12 +24,12 @@
           <!-- Example row of columns -->
           <div class="row">
             <div class="col-md-4">
-              <h2>Heading</h2>
+              <h2>Documentation</h2>
               <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
               <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
             </div>
             <div class="col-md-4">
-              <h2>Heading</h2>
+              <h2>About</h2>
               <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
               <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
             </div>
@@ -46,7 +46,7 @@
         <div *ngIf="!login" style="margin:0 20%;padding:20px;border-radius:10px;background-color:rgba(189, 183, 183, 0.336);box-shadow:2px 2px 2px;height:auto">
           <h3 class="text-center"> Registration </h3>
           <form class="form-group" style="padding:10px" [formGroup]="registerForm" (ngSubmit)="register($event)">
-            <input class="form-control mr-sm-2" formControlName="username" type="text" placeholder=" Enter your username"><br>
+            <input class="form-control mr-sm-2" formControlName="username" autofocus type="text" placeholder=" Enter your username"><br>
             <input class="form-control mr-sm-2" formControlName="passkey" type="password" placeholder=" Password" aria-describedby="passHelp">
               <small id="passHelp" class="form-text text-muted">Please copy the password somewhere safe..no forgot password option</small><br>
             <!--<input type="checkbox" (click)="getWorkForm()" (ngModal)="notStudent"> Working for college/school .<br><br>-->

@@ -22,22 +22,36 @@
             <input type="checkbox" formControlName="peer2" value="peer2"> peer2 <br><br>
           </div>
         </div>
-        <div class="ll" *ngIf="!isValidRequest">
+        <div class="ll" *ngIf="!isValidRequest && (!gotUpdateRequest && !gotAddRequest) ">
           <button class="btn btn-outline-info col-sm-4 decider" (click)="addRequest()" type="submit" >Add details</button>
           <button class="btn btn-outline-info col-sm-4 decider1" (click)="updateRequest()" type="submit">Update details</button>
         </div> 
       </form>
+      <div *ngIf="gotUpdateRequest && !isValidRequest" class="row">
+        <input class="form-control col-sm-6 lr" type="text" [(ngModel)]="eduToEdit" placeholder=" Enter Education degree you want to edit">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button  style="margin-top:3% !important" class="btn btn-outline-info my-sm-1" (click)="getEduForm()">Get Update Form</button>
+      </div>
       <div class="detailsForm" *ngIf="isValidRequest">
         <form class="form-group" style="padding:10px" [formGroup]="addForm" (ngSubmit)="addDetails($event)">
           <div id="PersonalDetails" class="row" *ngIf="addWithPersonal">
             <div class="panel-heading col-sm-12">
-              <label class="cursive"><span>Personal Details</span></label><br>
+              <label><span>Personal Details</span></label><br>
             </div>
-            <input class="form-control col-sm-12 mr-sm-2 ll" formControlName="name" type="text" placeholder=" Student Name" ><br>
-            <input class="form-control col-sm-4 mr-sm-2 ll" formControlName="dob" type="text" placeholder=" Student DOB" ><br>
-            <div class="col-sm-7 lr">
-              <input type="radio" formControlName="gender" value="male"> Male &nbsp;
-              <input type="radio" formControlName="gender" value="female"> Female <br><br> 
+            <div class="row">
+              <div class="col-sm-6">
+                  <label for="name">Degree Name</label>
+                  <input id="name" class="form-control col-sm-12 mr-sm-2" formControlName="name" type="text" placeholder=" Student Name" ><br>
+              </div>
+              <div class="col-sm-6">
+                  <label for="dob">Percentage</label>
+                  <input id="dob" class="form-control col-sm-12 mr-sm-2" formControlName="dob" type="text" placeholder=" Student DOB" ><br>
+              </div>
+              <div class="col-sm-7">
+                <label for="gender"> Gender</label><br>
+                <input type="radio" formControlName="gender" id="gender" value="male"> Male &nbsp;
+                <input type="radio" formControlName="gender" id="gender" value="female"> Female <br><br> 
+              </div>
             </div>
           </div>
           <div id="eduForm" class="row" *ngIf="addWithPersonal || addEduDetails">
@@ -46,19 +60,33 @@
                 <!-- address header, show remove button when more than one address available -->
                 <div  class="panel-heading">
                     <span>Education Details  <span style="margin-left: 10%" *ngIf="addForm.controls.education.controls.length > 1 && !gotUpdateRequest" (click)="removeEdu(i)"> <i>&#10006;</i>
-                    </span></span><br>
-                   
+                    </span></span><br>  
                 </div>
     
                 <!-- Angular assigns array index as group name by default 0, 1, 2, ... -->
                 <div [formGroupName]="i" class="col-sm-11" style="border: 0 2px 2px 2px">
                   <!--street-->
                   <div class="row">
-                      <input class="form-control col-sm-12 mr-sm-2" formControlName="collegeName" type="text" placeholder=" Enter College Name " ><br>
-                      <input class="form-control col-sm-6 mr-sm-2 ll" formControlName="degree" type="text" placeholder=" Enter Degree " ><br>
-                      <input class="form-control col-sm-5 mr-sm-2 lr" formControlName="score" type="text" placeholder=" Percentage " ><br>
-                      <input class="form-control col-sm-6 mr-sm-2 ll" formControlName="board" type="text" placeholder=" Board affilated to " ><br>
-                      <input class="form-control col-sm-5 mr-sm-2 lr" formControlName="completedYear" type="text" placeholder="completed year " ><br>
+                    <div class="col-sm-12">
+                        <label for="collegeName">Institute Name</label>
+                        <input  id="collegeName" class="form-control col-sm-12 mr-sm-2" formControlName="collegeName" type="text" placeholder=" Enter College Name " ><br>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="degree">Degree Name</label>
+                        <input id="degree" class="form-control col-sm-12 mr-sm-2 " formControlName="degree" type="text" placeholder=" Enter Degree " ><br>  
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="Score">Percentage</label>
+                        <input  id="Score" class="form-control col-sm-12 mr-sm-2 " formControlName="score" type="text" placeholder=" Percentage " ><br>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="board">Board Affiliated </label>
+                        <input id="board" class="form-control col-sm-12 mr-sm-2 " formControlName="board" type="text" placeholder=" Board affilated to " ><br>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="CmpltdYr">Completed Year</label>
+                        <input id="CmpltdYr" class="form-control col-sm-12 mr-sm-2 " formControlName="completedYear" type="text" placeholder="completed year " ><br>
+                    </div>
                   </div><br><br>
                 <div>
                 </div>
@@ -77,19 +105,20 @@
            -->
            </div>
            <div class="margin-20" style="color:blue;" *ngIf="addForm.controls.education.controls.length < 3 && !gotUpdateRequest">
-              <a (click)="addEdu()" style="cursor: hand">
-                Add another Education Details +
+              <a (click)="addEdu()" style="cursor: pointer">
+                  <h4 style="display:inline">+</h4>  Add more Education Details 
               </a>
             </div>
             <div class="ll">
               <button class="btn btn-outline-info col-sm-4" type="submit"  *ngIf="gotAddRequest">Add</button>
               <button class="btn btn-outline-info col-sm-4" type="submit" *ngIf="gotUpdateRequest" >Update</button>
+              <button class="btn btn-outline-danger col-sm-4" type="button" (click)="cancel()" *ngIf="gotAddRequest || gotUpdateRequest" > Cancel </button>
             </div>
           </div> 
           </div>
         </form>
-        </div>
-    <div class="contentDivs col-sm-7" *ngIf="forms[1]">
+      </div>
+      <div class="contentDivs col-sm-7" *ngIf="forms[1]">
         <h3 class="text-center cursive"> Work Details</h3><hr>
         <form class="form-group" style="padding:10px">
           <input class="form-control mr-sm-2" type="text" placeholder=" Enter Employees Unique ID" aria-describedby="passHelp">
