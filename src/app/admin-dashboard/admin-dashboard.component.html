@@ -54,7 +54,60 @@
     </form>
   </div>
   <div class="contentDivs col-sm-6" *ngIf="forms[4]">
-    <h3 class="text-center cursive" style="padding-bottom: 70%"> Not generated much info to display ... stay tuned</h3>
-    <button class="btn btn-success" (click)="getInfo()">click For Info</button>
+   <div class="col-sm-12">
+      <button class="btn btn-info" (click)="getInfo()" style="margin-left:40%"> Refresh </button><br><br>
+   </div>
+    <table class="table table-bordered">
+      <thead class="thead-inverse">
+        <tr>
+          <th colspan="100%"><h4>Channel Information</h4></th>
+        </tr>
+        <tr class="thead-inverse">
+          <th>Peer</th>
+          <th colspan="100%" class="text-center">Joined channels</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cinfo of joinedChannelsInfo;let i=index">
+          <td scope="row">Peer {{i+1}}</td>
+          <td *ngFor="let chinfo of cinfo.channels" class="text-center">
+               {{chinfo.channel_id}}
+          </td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <br><br>
+    <table class="table table-bordered">
+        <thead class="thead-inverse">
+          <tr>
+            <th colspan="100%"><h4>Installed Chaincode Information</h4></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cinfo of installedChaincodes;let i=index">
+            <td scope="row">On Peer {{i+1}}</td>
+            <td>{{cinfo}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br><br>
+      <table class="table table-bordered">
+          <thead class="thead-inverse">
+            <tr>
+              <th colspan="100%"><h4>Instantiated Chaincode Information</h4></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cinfo of instantiatedChaincodes;let i=index">
+                <td scope="row"> On Peer {{i+1}}</td>
+              <td>
+               <!-- <tr *ngFor="let c of cinfo">
+                  <td>{{c}}</td>
+                </tr>-->{{cinfo}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
   </div>
 </div>

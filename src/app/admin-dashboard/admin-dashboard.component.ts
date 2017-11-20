@@ -124,21 +124,32 @@ export class AdminDashboardComponent implements OnInit {
   instantiatedChaincodes=[];
   channelInfo = [];
   peers = ['peer1','peer2'];
+  
   getInfo(){
+
+    this.joinedChannelsInfo = [];
+    this.installedChaincodes = [];
+    this.instantiatedChaincodes=[];
+    this.channelInfo = [];
+    this.createArtifacts.chaincodeInfo("peer1",'installed').subscribe(res =>{
+      console.log("installed in peer1 ",res);
+      this.installedChaincodes.push(res);
+    })
+    this.createArtifacts.chaincodeInfo("peer2",'installed').subscribe(res =>{
+      console.log("installed in peer1 ",res);
+      this.installedChaincodes.push(res);
+    })
     for(var j= 0 ;j<2;j++){
       this.createArtifacts.getChannels(this.peers[j]).subscribe(res =>{
-        console.log("",res);
-        this.joinedChannelsInfo.push(res);
-          this.createArtifacts.chaincodeInfo(this.peers[j],'installed').subscribe(res =>{
-            console.log("installed in peer1 ",res);
-            this.installedChaincodes.push(res);
-            this.createArtifacts.chaincodeInfo(this.peers[j],'instantiated').subscribe(res =>{
-              console.log(" instantiated in peer2",res);
-              this.instantiatedChaincodes.push(res);
-            })
-          })
+      console.log("",res.channels);
+      this.joinedChannelsInfo.push(res);
+        this.createArtifacts.instantiateChaincodeInfo(this.peers[j],'instantiated').subscribe(res =>{
+          console.log(" instantiated in peer2",res);
+          this.instantiatedChaincodes.push(res);
+        })
       })
     }
+    
     this.createArtifacts.getChannelInfo('mychannel').subscribe(res =>{
       console.log(res);
       this.channelInfo.push(res);

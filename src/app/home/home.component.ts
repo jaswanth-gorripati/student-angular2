@@ -8,8 +8,12 @@ import { UserInfoService } from "../user-info.service";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  
+  names: string[] = ["student", "employee", "employer", "college/school staff"];
 
-  constructor(public fb: FormBuilder,private userInfo: UserInfoService) { }
+  constructor(public fb: FormBuilder,private userInfo: UserInfoService) {
+    
+  }
   ngOnInit() {}
 
   @Output() messageEvent = new EventEmitter<boolean>();
@@ -43,10 +47,13 @@ export class HomeComponent implements OnInit {
   });
 
   public registerForm = this.fb.group({
+    uniqueid:["",Validators.required],
     username: ["", Validators.required],
     passkey: ["", Validators.required],
     orgName:["", Validators.required],
-    position:["", Validators.required]
+    position:[" ", Validators.required],
+    aType:["student",Validators.required],
+    isAdmin:["false",Validators.required]
   });
 
   getWorkForm(){

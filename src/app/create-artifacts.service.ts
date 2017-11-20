@@ -34,12 +34,19 @@ export class CreateArtifactsService {
     return this.http.post('http://localhost:4000/channels/'+formdata.channelName+'/chaincodes',formdata,this.headers()).map(res => res);
   }
   getChannelInfo(channelName){
+    console.log("from service ",this.headers());
     return this.http.get('http://localhost:4000/channels/'+channelName+'',this.headers()).map(res => res.json());
   }
   chaincodeInfo(peer,type){
+    console.log("from service ",this.headers());
     return this.http.get('http://localhost:4000/chaincodes?peer='+peer+'&&type='+type+'',this.headers()).map(res => res.text());
   }
+  instantiateChaincodeInfo(peer,type){
+    console.log("from service ",this.headers());
+    return this.http.get('http://localhost:4000/chaincodes?peer='+peer+'&&type='+type+'',this.headers()).map(res => res.json());
+  }
   getChannels(formdata){
+    console.log("from service ",this.headers());
     return this.http.get('http://localhost:4000/channels?peer='+formdata+'',this.headers()).map(res => res.json());
   }
 }
