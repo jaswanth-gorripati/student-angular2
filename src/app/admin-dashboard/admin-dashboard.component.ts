@@ -28,10 +28,13 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.request(0);
-    this.getInfo();
+    
   }
   request(index){
     this.forms[index]=1;
+    if(index == 4){
+      this.getInfo();
+    }
     for(var i=0;i<5;i++){
       if(i!=index){
         this.forms[i]=0;

@@ -1,16 +1,17 @@
 <div class="row" style="min-height:100%">
+  <!-- Side NAV BAR 
     <div class="sidebar col-sm-2">
       <label (click)="request(0)" [ngClass]="{'active':forms[0]}">Education details</label><br>
       <label (click)="request(1)" [ngClass]="{'active':forms[1]}">Work Details</label><br>
-      <label (click)="request(2)" [ngClass]="{'active':forms[2]}">Request To Add/Updare </label><br>
-       
     </div>
+  -->
     <div class="contentDivs col-sm-7" *ngIf="forms[0]">
       <h3 class="text-center cursive"> Education Details</h3><hr>
       <form class="form-group" style="padding:10px" [formGroup]="isUniqueID" (ngSubmit)="isExists($event)">
-        <input class="form-control mr-sm-2" formControlName="uniqueId" type="text" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
-        <small id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
-        <div class="row formDiv">
+        <input *ngIf="user.accountType != 'student'" class="form-control mr-sm-2" formControlName="uniqueId" type="text" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
+        <small *ngIf="user.accountType != 'student'" id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
+       <!-- NETWORK INFORMATION 
+          <div class="row formDiv"  *ngIf="user.accountType != 'student'">
           <div id="networkDetails" class="row">
             <input class="form-control col-sm-3 mr-sm-2 lr" formControlName="channelName" type="text" placeholder=" Channel Name " ><br>
             <input class="form-control col-sm-3 mr-sm-2 lr" formControlName="chaincodeName" type="text" placeholder=" Chaincode Name " ><br>
@@ -21,16 +22,17 @@
             <input type="checkbox" formControlName="peer1" value="peer1"> peer1 &nbsp;
             <input type="checkbox" formControlName="peer2" value="peer2"> peer2 <br><br>
           </div>
-        </div>
+        </div>-->
         <div class="ll" *ngIf="!isValidRequest && (!gotUpdateRequest && !gotAddRequest) ">
           <button class="btn btn-outline-info col-sm-4 decider" (click)="addRequest()" type="submit" >Add details</button>
           <button class="btn btn-outline-info col-sm-4 decider1" (click)="updateRequest()" type="submit">Update details</button>
         </div> 
       </form>
       <div *ngIf="gotUpdateRequest && !isValidRequest" class="row">
-        <input class="form-control col-sm-6 lr" type="text" [(ngModel)]="eduToEdit" placeholder=" Enter Education degree you want to edit">
+        <input class="form-control col-sm-5 lr" type="text" [(ngModel)]="eduToEdit" placeholder=" Enter Education degree you want to edit">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button  style="margin-top:3% !important" class="btn btn-outline-info my-sm-1" (click)="getEduForm()">Get Update Form</button>
+        <button  style="margin-top:3% !important" class="btn btn-outline-info my-sm-1" (click)="getEduForm()">Get Update Form</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-outline-danger col-sm-2" style="height: 39px;margin-top:22px;" type="button" (click)="cancel()" > Cancel </button>
       </div>
       <div class="detailsForm" *ngIf="isValidRequest">
         <form class="form-group" style="padding:10px" [formGroup]="addForm" (ngSubmit)="addDetails($event)">
@@ -118,7 +120,7 @@
           </div>
         </form>
       </div>
-      <div class="contentDivs col-sm-7" *ngIf="forms[1]">
+     <!-- <div class="contentDivs col-sm-7" *ngIf="forms[1]">
         <h3 class="text-center cursive"> Work Details</h3><hr>
         <form class="form-group" style="padding:10px">
           <input class="form-control mr-sm-2" type="text" placeholder=" Enter Employees Unique ID" aria-describedby="passHelp">
@@ -180,6 +182,6 @@
               <button class="btn btn-outline-info col-sm-4 decider1" >Request to Update</button><hr>
             </div>
           </form>
-    </div>
+    </div>-->
   </div>
   

@@ -17,9 +17,11 @@ export class AppComponent {
   loggedIn = false;
   user:any;
   isAdmin:any;
+  AccountType:any;
   receiveMessage($event) {
     this.loggedIn = $event;
     this.isAdmin = this.userInfo.isAdmin();
+    this.AccountType = this.userInfo.AccountType();
     this.router.navigate(["/dashboard"]);
   }
 }

@@ -16,6 +16,7 @@ import { UserInfoService } from './user-info.service';
 import { AuthGuardService } from './auth-guard.service';
 import { CreateArtifactsService } from "./create-artifacts.service";
 import { AddUpdateStudentDetailsService } from "./add-update-student-details.service";
+import { MydetailsComponent } from './mydetails/mydetails.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: HomeComponent },
@@ -23,6 +24,7 @@ const appRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'requests', component: RaiseRequestComponent },
   { path: 'search', component: SearchInfoComponent },
+  { path: 'mydetails', component: MydetailsComponent },
   { path: 'admindash', component: AdminDashboardComponent, canActivate: [AuthGuardService], },
   { path: '**', redirectTo:'login',pathMatch:'full'},
 ];
@@ -34,7 +36,8 @@ const appRoutes: Routes = [
     AdminDashboardComponent,
     DashboardComponent,
     RaiseRequestComponent,
-    SearchInfoComponent
+    SearchInfoComponent,
+    MydetailsComponent
   ],
   imports: [
     BrowserModule , BrowserAnimationsModule,FormsModule,ReactiveFormsModule,HttpModule,

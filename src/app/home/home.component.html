@@ -46,38 +46,62 @@
         <div *ngIf="!login" style="margin:0 20%;padding:20px;border-radius:10px;background-color:rgba(189, 183, 183, 0.336);box-shadow:2px 2px 2px;height:auto">
           <h3 class="text-center"> Registration </h3>
           <form class="form-group" style="padding:10px" [formGroup]="registerForm" (ngSubmit)="register($event)">
-            <input class="form-control mr-sm-2" formControlName="uniqueid" autofocus type="text" placeholder=" Enter your Unique ID"><br>
-            <input class="form-control mr-sm-2" formControlName="username" autofocus type="text" placeholder=" Enter your username"><br>
-            <input class="form-control mr-sm-2" formControlName="passkey" type="password" placeholder=" Password" aria-describedby="passHelp">
-              <small id="passHelp" class="form-text text-muted">Please copy the password somewhere safe..no forgot password option</small><br>
+            <label for="uniqueID">UniqueID</label>
+              <input class="form-control mr-sm-2" id="uniqueID" formControlName="uniqueid" autofocus type="text" placeholder=" Enter your Unique ID"><br>
+            <label for="username">Username</label>
+              <input class="form-control mr-sm-2" id="username" formControlName="username" autofocus type="text" placeholder=" Enter your username"><br>
+            <label for="password">Password </label>
+              <input class="form-control mr-sm-2" id="password" formControlName="passkey" type="password" placeholder=" Password" aria-describedby="passHelp">
+                <small id="passHelp" class="form-text text-muted">Please copy the password somewhere safe..no forgot password option</small><br>
+            <div class="row" style="display:inline !important;">
+              <div class="col-sm-5">
+                  <label for="dob">Date Of Birth</label>
+                  <input class="form-control col-sm-12" id="dob" date-format="YYYY-MM-DD hh:mm:ss" formControlName="dob" autofocus type="date" placeholder=" Date of birth"><br>
+              </div>
+              <div class="col-sm-5">
+                  <label for="gender">Gender</label><br>
+                  <input class="col-sm-5" id="gender" formControlName="gender" name="gender" value="male" autofocus type="radio"> Male &nbsp;&nbsp;&nbsp;
+                  <input class="col-sm-5" id="gender"  formControlName="gender" name="gender" value="female"  autofocus type="radio" > Female<br>
+              </div>
+
+                
+            </div>
+  
             <div>
-                <h4>Select Profossion </h4>
-                <select formControlName="aType" name="Select name" class="form-control dropdown"> 
-                  <option *ngFor="let n of names" [attr.value]="n">{{n}}</option>
-                </select><br>
-              </div><br>
+              <h4>Select Profossion </h4>
+              <select formControlName="aType" name="Select name" class="form-control dropdown"> 
+                <option *ngFor="let n of names" [attr.value]="n">{{n}}</option>
+              </select><br>
+            </div><br>
             <!--<input type="checkbox" (click)="getWorkForm(1)" checked="{{studentForm}}" > Student <br><br>
             <input type="checkbox" (click)="getWorkForm(1)" checked="{{employeeForm}}" > Employee <br><br>
             <input type="checkbox" (click)="getWorkForm(2)" checked="{{employerForm}}"> Employer <br><br>
             <input type="checkbox" (click)="getWorkForm(3)" checked="{{collegeAdminForm}}"> School / University Staff<br><br>
             --><div *ngIf="registerForm.controls.aType.value == 'employer'">
-              <input formControlName="orgName" class="form-control mr-sm-2" type="text" placeholder=" Enter your Organisation name"><br>
-              <input formControlName="position" class="form-control mr-sm-5" type="text" placeholder=" Enter your Designation"><br>
+              <label for="orgName">Organisation name</label>
+              <input formControlName="orgName" id="orgName" class="form-control mr-sm-2" type="text" placeholder=" Enter your Organisation name"><br>
+              <label for="position">Position</label>
+              <input formControlName="position" id="position" class="form-control mr-sm-5" type="text" placeholder=" Enter your Designation"><br>
               <input type="checkbox" formControlName="isAdmin">  <small>I Hold the admin rights of my organisation to Add / Update data to network</small>
               <p></p><br>
             </div>
             <div *ngIf="registerForm.controls.aType.value =='college/school staff'">
-              <input formControlName="orgName" class="form-control mr-sm-2" type="text" placeholder=" Enter your Institute name"><br>
-              <input formControlName="position" class="form-control mr-sm-5" type="text" placeholder=" Enter your Designation"><br>
+              <label for="instNAme">Institution Name</label>
+              <input formControlName="orgName" id="instNAme" class="form-control mr-sm-2" type="text" placeholder=" Enter your Institute name"><br>
+              <label for="position">Position</label>
+              <input formControlName="position" id="position" class="form-control mr-sm-5" type="text" placeholder=" Enter your Designation"><br>
               <input type="checkbox" formControlName="isAdmin">  <small>I Hold the admin rights of my organisation to Add / Update data to network</small>
               <p></p><br>
             </div>
             <div *ngIf="registerForm.controls.aType.value  === 'student'">
-              <input formControlName="orgName" class="form-control mr-sm-2" type="text" placeholder=" Enter your College / School  name"><br>
+              <label for="instName">Institution Name</label>
+              <input formControlName="orgName" id="instName" class="form-control mr-sm-2" type="text" placeholder=" Enter your College / School  name"><br>
             </div>
             <div *ngIf="registerForm.controls.aType.value  === 'employee'">
-              <input formControlName="orgName" class="form-control mr-sm-2" type="text" placeholder=" Curent working Organisation "><br>
-              <input formControlName="position" class="form-control mr-sm-5" type="text" placeholder=" Your Designation"><br>
+              <label for="orgName">Organisation name</label>
+              <input formControlName="orgName" id="orgName" class="form-control mr-sm-2" type="text" placeholder=" Curent working Organisation "><br>
+              <label for="position">Position</label>
+              <input formControlName="position" id="position" class="form-control mr-sm-5" type="text" placeholder=" Your Designation"><br>
             </div>
             <button class="btn btn-outline-success col-sm-12" type="submit"  [disabled]="registerForm.invalid">Register into Network</button><br><br>
             <span>Already registered... <a href="#" (click)="login = true" style="font-family:cursive">Login Here</a></span>

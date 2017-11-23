@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
   login = true;
 
   public loginForm = this.fb.group({
-    username: ["scadmin", Validators.required],
+    username: ["jaswanth", Validators.required],
     passkey: ["pass", Validators.required],
     orgName:["org1",[Validators.required]]
   });
@@ -49,11 +49,14 @@ export class HomeComponent implements OnInit {
   public registerForm = this.fb.group({
     uniqueid:["",Validators.required],
     username: ["", Validators.required],
+    dob:['',Validators.required],
+    gender:['',Validators.required],
+    email:['example@gmail.com',Validators.required],
     passkey: ["", Validators.required],
     orgName:["", Validators.required],
     position:[" ", Validators.required],
     aType:["student",Validators.required],
-    isAdmin:["false",Validators.required]
+    isAdmin:[false,Validators.required]
   });
 
   getWorkForm(){
@@ -65,7 +68,7 @@ export class HomeComponent implements OnInit {
     this.userInfo.enrollUSer(this.loginForm.value).subscribe(res => {
       console.log(res);
       if(res.success){
-        this.userInfo.setUser(res,this.loginForm.controls.username.value,this.loginForm.controls.orgName.value)
+        this.userInfo.setUser(res,this.loginForm.controls.username.value,this.loginForm.controls.orgName.value);
        console.log(this.userInfo.getUserToken());
         this.messageEvent.emit(true);
       }
@@ -77,7 +80,11 @@ export class HomeComponent implements OnInit {
     this.userInfo.registerUser(this.registerForm.value).subscribe(res => {
       console.log(res);
       if(res.success){
-        alert("successfully registered .. can LOGIN NOW ")
+        
+        let submitForm = {"fcn":"register","args":[this.registerForm.controls.uniqueid.value," ",this.registerForm.controls.username.value,this.registerForm.controls.dob.value,this.registerForm.controls.gender.value,this.registerForm.controls.email,this.registerForm.controls.aType.value]}
+        this.userInfo.registerToNetwork(submitForm).subscribe(res =>{
+          alert("successfully registered .. can LOGIN NOW ")
+        })
         this.login = true;
       }
     });

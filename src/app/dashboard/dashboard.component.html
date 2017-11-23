@@ -1,15 +1,28 @@
 <div class="container">
 
-  <table class="table table-bodered">
-    <tr><td class="text-center edu" colspan="4">Personal Details</td></tr>
-    <tr><td><label>Name </label></td><td>:</td><td>{{details.name}}</td></tr>
-    <tr><td><label>DOB</label></td><td>:</td><td>{{details.dob}}</td></tr>
-    <tr><td><label>Age</label></td><td>:</td><td>{{details.age}}</td></tr>
-    <tr><td><label>Father</label></td><td>:</td><td>{{details.father}}</td></tr>
+  <table class="table table-bodered" *ngIf="accounType == 'student'">
+    <tr>
+      <td><label class="bold">ID :</label></td><td>:</td><td>{{user.id}}</td>
+      <td><label>Name </label></td><td>:</td><td>{{user.name}}</td>
+    </tr>
+    <tr>
+      <td><label>Studying In </label></td><td>:</td><td>{{user.studyingIn}}</td>
+    </tr>
   </table>
-  <table class="table table-bodered">
-    <tr><td class="text-center edu" colspan="5">Education Details</td></tr>
-    <tr class="heading"> <td>Degree</td><td>Board</td><td>College Name</td><td>Score</td><td>College Code</td></tr>
+  <table class="table table-bodered" *ngIf="accounType != 'student'">
+      <tr>
+        <td><label >ID :</label></td><td>:</td><td>{{user.id}}</td>
+        <td colspan="2"><label>Name </label></td><td>:</td><td>{{user.name}}</td>
+        <td><label>Works In </label></td><td>:</td><td>{{user.worksin}}</td>
+      </tr>
+      <tr>
+        <td><label>Working as </label></td><td>:</td><td>{{user.position}}</td>
+        <td><label>Has admin rights </label></td><td>:</td><td>{{user.isAdmin}}</td>
+      </tr>
+    </table>
+  <!--<table class="table table-bodered">
+    <tr><td class="edu" colspan="100%"><a class="col-sm-4">Pending Requests</a><a class="col-sm-4">Approved Requests</a><a class="col-sm-4">Rejectd Requests</a></td></tr>
+    <tr class="heading"> <td>Degree</td><td>Board</td><td>College Name</td><td>Score</td><td>College Code</td><td> Actions </td></tr>
     <tr *ngFor="let edu of details.education" class="info">
      
        <td><span> {{edu.degree}} </span></td>
@@ -17,19 +30,65 @@
        <td><span>{{edu.clgName}}</span></td>
        <td><span>{{edu.score}}</span></td>
        <td><span>{{edu.clgCode}}</span></td>
+       <td><button class="btn btn-info"> Approve </button>&nbsp;&nbsp;&nbsp;<button class="btn btn-danger"> Reject </button></td>
     </tr>
-
-  </table>
-  <table class="table table-bodered">
-      <tr><td class="text-center edu" colspan="4">Work Details</td></tr>
-      <tr class="heading"><td>Designation</td><td>Company</td><td>Location</td><td>Working From</td>      </tr>
-      <tr *ngFor="let edu of details.work" class="info">
-         <td><span> {{edu.designation}} </span></td>
-         <td><span>{{edu.company}}</span></td>
-         <td><span>{{edu.location}}</span></td>
-         <td><span>{{edu.workingFrom}}</span></td>
+  </table>-->
+  <div class="row">
+      <!--<div class="col-sm-3" style="clear:both"></div>
+      <div class="edu col-sm-6" style="height:40px">
+        <a class="col-sm-4" [ngClass]="{'act':form[0]}"  (click)="changeForm(0)" > Pending Requests </a>
+        <a class="col-sm-4" (click)="changeForm(1)" [ngClass]="{'act':form[1]}"> Approved Requests </a>
+        <a class="col-sm-4" (click)="changeForm(2)" [ngClass]="{'act':form[2]}"> Rejected Requests </a>
+      </div>-->
+      <div class=" container col-sm-12 btn-group" style="margin-left:30%">
+          <button (click)="changeForm(0)"  [ngClass]="{'btn btn-info':form[0],' btn btn-outline-info':form[1]||form[2]}">Pending Requests</button>
+          <button (click)="changeForm(1)" [ngClass]="{'btn btn-info':form[1],'btn btn-outline-info':form[0]||form[2]}">Approved Requests</button>
+          <button (click)="changeForm(2)" [ngClass]="{'btn btn-info':form[2],'btn btn-outline-info':form[1]||form[0]}">Denied Requests</button>
+        </div>
+  </div><br><br>
+  <div class="container col-sm-12 tp" *ngIf="form[0]">
+    <table class="table table-hover tp">
+      <tr class="heading"> <td>Student ID</td><td>Request Type</td><td> Degree </td><td>Score</td><td>Passed Out Year</td><td> Actions </td></tr>
+      <tr *ngFor="let edu of details.education" class="info">
+        
+          <td><span> {{edu.degree}} </span></td>
+          <td><span>{{edu.board}}</span></td>
+          <td><span>{{edu.clgName}}</span></td>
+          <td><span>{{edu.score}}</span></td>
+          <td><span>{{edu.clgCode}}</span></td>
+          <td><button class="btn btn-outline-info"> Approve </button>&nbsp;&nbsp;&nbsp;<button class="btn btn-outline-danger"> Reject </button></td>
       </tr>
-  
     </table>
-
+  </div>
+  <div class="container col-sm-12 tp" *ngIf="form[1]">
+    <table class="table table-hover tp">
+      <thead>
+          <tr class="heading"> <td>Student ID</td><td>Request Type</td><td> Degree </td><td>Score</td><td>Passed Out Year</td><td> Status </td></tr>
+      </thead>
+     <tbody class="tp">
+        <tr *ngFor="let edu of details.education" class="info">
+              <td><span> {{edu.degree}} </span></td>
+              <td><span>{{edu.board}}</span></td>
+              <td><span>{{edu.clgName}}</span></td>
+              <td><span>{{edu.score}}</span></td>
+              <td><span>{{edu.clgCode}}</span></td>
+              <td><h5 class="btn btn-info" disabled> Approved </h5></td>
+          </tr>
+     </tbody>
+    </table>
+  </div>
+  <div class="container col-sm-12 tp" *ngIf="form[2]">
+    <table class="table table-hover">
+        <tr class="heading"> <td>Student ID</td><td>Request Type</td><td> Degree </td><td>Score</td><td>Passed Out Year</td><td> Status </td></tr>
+      <tr *ngFor="let edu of details.education" class="info">
+        
+          <td><span> {{edu.degree}} </span></td>
+          <td><span>{{edu.board}}</span></td>
+          <td><span>{{edu.clgName}}</span></td>
+          <td><span>{{edu.score}}</span></td>
+          <td><span>{{edu.clgCode}}</span></td>
+          <td><h5 class="btn btn-danger" disabled> Rejected </h5></td>
+      </tr>
+    </table>
+  </div>
 </div>

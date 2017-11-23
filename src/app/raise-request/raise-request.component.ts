@@ -12,17 +12,23 @@ export class RaiseRequestComponent implements OnInit {
   forms = [0,0,0,0,0]
   token:any;
   userName:any;
+  user:any;
   isValidRequest = false;
+  accountType:any;
+  acadamicNetwork:any = {"peers":['peer1','peer2'],"channelName":'acadamics',"chaincodeName":"mycc"}
   constructor(public fb: FormBuilder,private userInfo: UserInfoService,private addOrUpdate: AddUpdateStudentDetailsService) {
     this.token = this.userInfo.getUserToken();
     console.log(this.token);
     this.addOrUpdate.setToken(this.token);
     this.userName = this.userInfo.getUserName();
     this.userName = this.userName.toUpperCase();
+    this.accountType = this.userInfo.AccountType();
+    this.user = this.userInfo.getAttrs();
    }
 
   ngOnInit() {
     this.request(0);
+    
   }
   request(index){
     this.forms[index]=1;
@@ -52,7 +58,10 @@ export class RaiseRequestComponent implements OnInit {
     this.setPeers();
     this.gotAddRequest = true;
     this.gotUpdateRequest =false;
-    this.isUniqueID.controls['args'].setValue([""+this.isUniqueID.controls.uniqueId.value+""]);
+    this.addEduDetails = true;
+    console.log("index :",this.addEduIndex)
+    this.isValidRequest = true;
+    /*this.isUniqueID.controls['args'].setValue([""+this.isUniqueID.controls.uniqueId.value+""]);
     let submitForm = {"fcn":"getHistory","args":[this.isUniqueID.controls.uniqueId.value]}
     this.addOrUpdate.isStudentExists(this.isUniqueID.value,submitForm).subscribe(res =>{
       console.log("from add Request: ",res);
@@ -65,7 +74,7 @@ export class RaiseRequestComponent implements OnInit {
       }
       console.log("index :",this.addEduIndex)
       this.isValidRequest = true;
-    })
+    })*/
   }
   gotUpdateRequest = false;
   updateEduIndexes:any;
@@ -74,21 +83,25 @@ export class RaiseRequestComponent implements OnInit {
     this.setPeers();
     this.gotUpdateRequest = true;
     this.gotAddRequest = false;
-    this.isUniqueID.controls['args'].setValue([this.isUniqueID.controls.uniqueId.value]);
-    let submitForm = {"fcn":"getHistory","args":[this.isUniqueID.controls.uniqueId.value]}
-    this.addOrUpdate.isStudentExists(this.isUniqueID.value,submitForm).subscribe(res =>{
-      console.log("from add Request: ",res);
-      this.tempEduDetails = res;
-      if(res[0] == undefined){
-        alert("not found");
-      }else{
-       
-        
-        /*this.addForm.controls['name'].setValue(res[index].StudentDetails.username);
-        this.addForm.controls['dob'].setValue(res[index].StudentDetails.DateOfBirth)
-        this.addForm.controls['gender'].setValue(res[index].StudentDetails.gender)*/
-      }
-    })
+    if(this.user.accountType == 'student' || this.user.accountType == "employee"){
+      let submitForm = {"fcn":"getHistory","args":[this.user.id]}
+    }else{
+      this.isUniqueID.controls['args'].setValue([this.isUniqueID.controls.uniqueId.value]);
+      let submitForm = {"fcn":"getHistory","args":[this.isUniqueID.controls.uniqueId.value]}
+      this.addOrUpdate.isStudentExists(this.acadamicNetwork,submitForm).subscribe(res =>{
+        console.log("from add Request: ",res);
+        this.tempEduDetails = res;
+        if(res[0] == undefined){
+          alert("not found");
+        }else{
+          
+          
+          /*this.addForm.controls['name'].setValue(res[index].StudentDetails.username);
+          this.addForm.controls['dob'].setValue(res[index].StudentDetails.DateOfBirth)
+          this.addForm.controls['gender'].setValue(res[index].StudentDetails.gender)*/
+        }
+      })
+    }
   }
   eduToEdit:any;
   getEduForm(){
