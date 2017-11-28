@@ -48,6 +48,8 @@
           <form class="form-group" style="padding:10px" [formGroup]="registerForm" (ngSubmit)="register($event)">
             <label for="uniqueID">UniqueID</label>
               <input class="form-control mr-sm-2" id="uniqueID" formControlName="uniqueid" autofocus type="text" placeholder=" Enter your Unique ID"><br>
+            <label for="email">Email Address</label>
+              <input class="form-control mr-sm-2" id="email" formControlName="email" autofocus type="text" placeholder=" Enter your Email address"><br>
             <label for="username">Username</label>
               <input class="form-control mr-sm-2" id="username" formControlName="username" autofocus type="text" placeholder=" Enter your username"><br>
             <label for="password">Password </label>
@@ -61,14 +63,15 @@
               <div class="col-sm-5">
                   <label for="gender">Gender</label><br>
                   <input class="col-sm-5" id="gender" formControlName="gender" name="gender" value="male" autofocus type="radio"> Male &nbsp;&nbsp;&nbsp;
-                  <input class="col-sm-5" id="gender"  formControlName="gender" name="gender" value="female"  autofocus type="radio" > Female<br>
+                  <input class="col-sm-5" id="gender"  formControlName="gender" name="gender" value="female"  autofocus type="radio" > Female<br><br>
+                  <button class="btn btn-secondary" type="button" (click)="showFiles()"> Upload Profile Photo<input style="display:none" id="file" type="file" (change)="changeListner($event)" accept=".jpg,.png" /></button>&nbsp;&nbsp;
+                  <img class="image" style="height:40px" />
               </div>
-
                 
             </div>
   
             <div>
-              <h4>Select Profossion </h4>
+              <h4>Select Profession </h4>
               <select formControlName="aType" name="Select name" class="form-control dropdown"> 
                 <option *ngFor="let n of names" [attr.value]="n">{{n}}</option>
               </select><br>

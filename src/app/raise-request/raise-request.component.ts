@@ -13,6 +13,7 @@ export class RaiseRequestComponent implements OnInit {
   token:any;
   userName:any;
   user:any;
+  userDetailsInNetwork:any;
   isValidRequest = false;
   accountType:any;
   acadamicNetwork:any = {"peers":['peer1','peer2'],"channelName":'acadamics',"chaincodeName":"mycc"}
@@ -28,7 +29,15 @@ export class RaiseRequestComponent implements OnInit {
 
   ngOnInit() {
     this.request(0);
-    
+    this.userInfo.getUserDetailsFromNetwork().subscribe(res =>{
+      console.log(res);
+      this.userDetailsInNetwork = res[0].Details;
+      console.log("userDetails:",this.userDetailsInNetwork)
+      for(let i=0;i<this.userDetailsInNetwork.education.length;i++){
+        this.eduOptions.push(this.userDetailsInNetwork.education[i].degree);
+      }
+      console.log("eduoptions:",this.eduOptions);
+    })
   }
   request(index){
     this.forms[index]=1;
@@ -79,62 +88,33 @@ export class RaiseRequestComponent implements OnInit {
   gotUpdateRequest = false;
   updateEduIndexes:any;
   tempEduDetails:any;
+  eduOptions:any = [];
   updateRequest(){
     this.setPeers();
     this.gotUpdateRequest = true;
     this.gotAddRequest = false;
-    if(this.user.accountType == 'student' || this.user.accountType == "employee"){
-      let submitForm = {"fcn":"getHistory","args":[this.user.id]}
-    }else{
-      this.isUniqueID.controls['args'].setValue([this.isUniqueID.controls.uniqueId.value]);
-      let submitForm = {"fcn":"getHistory","args":[this.isUniqueID.controls.uniqueId.value]}
-      this.addOrUpdate.isStudentExists(this.acadamicNetwork,submitForm).subscribe(res =>{
-        console.log("from add Request: ",res);
-        this.tempEduDetails = res;
-        if(res[0] == undefined){
-          alert("not found");
-        }else{
-          
-          
-          /*this.addForm.controls['name'].setValue(res[index].StudentDetails.username);
-          this.addForm.controls['dob'].setValue(res[index].StudentDetails.DateOfBirth)
-          this.addForm.controls['gender'].setValue(res[index].StudentDetails.gender)*/
-        }
-      })
-    }
   }
   eduToEdit:any;
   getEduForm(){
     let  isOk = false;
-    let index = this.tempEduDetails.length - 1; 
     this.removeEdu(0);
-    this.addEduDetails = true;
-    console.log(this.tempEduDetails);
-    for(let i=0;i<this.tempEduDetails[index].StudentDetails.education.length;i++){
-      if(this.userName == this.tempEduDetails[index].StudentDetails.education[i].WhoCanupdate.userName && this.eduToEdit == this.tempEduDetails[index].StudentDetails.education[i].degree){
-        this.updateEduIndexes = i;
-        console.log(this.tempEduDetails[index].StudentDetails.education[i]);
+    for(let i=0;i<this.userDetailsInNetwork.education.length;i++){
+      if(this.eduToEdit == this.userDetailsInNetwork.education[i].degree){
+        console.log(this.userDetailsInNetwork.education[i]);
         let form = this.fb.group({
-          degree:[this.tempEduDetails[index].StudentDetails.education[i].degree,Validators.required],
-          board:[this.tempEduDetails[index].StudentDetails.education[i].board,Validators.required],
-          collegeName: [this.tempEduDetails[index].StudentDetails.education[i].Institute, Validators.required],
-          completedYear: [""+this.tempEduDetails[index].StudentDetails.education[i].yearOfPassout+"", Validators.required],
-          score:[""+this.tempEduDetails[index].StudentDetails.education[i].score+"",Validators.required],
-          user:[this.tempEduDetails[index].StudentDetails.education[i].addedBy],
-          date:[this.tempEduDetails[index].StudentDetails.education[i].addedTime]
+          degree:[this.userDetailsInNetwork.education[i].degree,Validators.required],
+          board:[this.userDetailsInNetwork.education[i].board,Validators.required],
+          collegeName: [this.userDetailsInNetwork.education[i].Institute, Validators.required],
+          completedYear: [""+this.userDetailsInNetwork.education[i].yearOfPassout+"", Validators.required],
+          score:[""+this.userDetailsInNetwork.education[i].score+"",Validators.required]
         });
         let control = <FormArray>this.addForm.controls['education'];
         control.push(form);
         isOk = true;
         this.isValidRequest =true;
+        this.addEduDetails=true;
       }
     }
-    
-    if(isOk == false){
-      alert("no Education details regarding "+this.eduToEdit+" degree");
-      this.cancel()
-    }
-    
   }
   isExists(event){
     console.log(this.isUniqueID.value);
@@ -204,50 +184,32 @@ export class RaiseRequestComponent implements OnInit {
           submitForm.args.push(temp[i].degree,temp[i].board,temp[i].collegeName,temp[i].completedYear,temp[i].score,this.userName,temp[i].date);
         }
         this.submitAdd(submitForm);
-        setTimeout(()=>{
-          submitForm.fcn = "cwcu";
-          submitForm.args = [this.isUniqueID.controls.uniqueId.value,""+this.addEduIndex+"",this.userName,"jntu","admin"];
-          this.callCWCU(submitForm);
-        },5000)
         
       }else if(this.addEduDetails){
-        submitForm.fcn="addEducation";
-        submitForm.args.push(""+this.isUniqueID.controls.uniqueId.value+"")
+        submitForm.fcn="RequestEnroll";
+        submitForm.args = [];
         let temp = this.addForm.controls.education.value;
         console.log("temp:",temp)
         for(let i=0;i<temp.length;i++){
-            submitForm.args.push(temp[i].degree,temp[i].board,temp[i].collegeName,temp[i].completedYear,temp[i].score,this.userName,temp[i].date);
+            submitForm.args.push(temp[i].degree,temp[i].score,temp[i].completedYear,temp[i].collegeName,"Hyderabad",temp[i].board,"Add");
         }
         this.submitAdd(submitForm);
-        setTimeout(()=>{
-          submitForm.fcn = "cwcu";
-          submitForm.args = [this.isUniqueID.controls.uniqueId.value,""+this.addEduIndex+"",this.userName,"jntu","admin"];
-          this.callCWCU(submitForm);
-        },5000)
+        this.addForm.controls.education.reset();
       } 
       console.log(this.addForm.value)
       console.log(submitForm);
     }else{
       let i =0;
-      submitForm.fcn="updateEdu";
+      submitForm.fcn="RequestEnroll";
       let temp = this.addForm.controls.education.value;
       console.log(temp)
-      submitForm.args.push(this.isUniqueID.controls.uniqueId.value,""+this.updateEduIndexes+"",this.userName,temp[i].degree,temp[i].board,temp[i].collegeName,temp[i].completedYear,temp[i].score);
+      submitForm.args.push(temp[i].degree,temp[i].score,temp[i].completedYear,temp[i].collegeName,"Hyderabad",temp[i].board,"Update");
       this.submitAdd(submitForm)
       this.addForm.controls.education.reset();
     }  
     
   }
   Success = false;
-  callCWCU(form){
-    if(this.Success == true){
-      this.submitAdd(form);
-    }else{
-      setTimeout(()=> {
-        this.callCWCU(form);
-      }, 1000);
-    }
-  }
   submitAdd(submitForm){
     this.Success = false;
     console.log("from submission",submitForm)

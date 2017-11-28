@@ -28,8 +28,11 @@
           <button class="btn btn-outline-info col-sm-4 decider1" (click)="updateRequest()" type="submit">Update details</button>
         </div> 
       </form>
-      <div *ngIf="gotUpdateRequest && !isValidRequest" class="row">
-        <input class="form-control col-sm-5 lr" type="text" [(ngModel)]="eduToEdit" placeholder=" Enter Education degree you want to edit">
+      <div *ngIf="gotUpdateRequest && !isValidRequest" class="row" >
+        <select class="form-control col-sm-5 lr" id="sel1" [(ngModel)]="eduToEdit">
+          <option *ngFor="let edu of eduOptions">{{edu}}</option>
+        </select>
+       
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button  style="margin-top:3% !important" class="btn btn-outline-info my-sm-1" (click)="getEduForm()">Get Update Form</button>&nbsp;&nbsp;&nbsp;
         <button class="btn btn-outline-danger col-sm-2" style="height: 39px;margin-top:22px;" type="button" (click)="cancel()" > Cancel </button>
@@ -61,7 +64,7 @@
               <div *ngFor="let education of addForm.controls.education.controls; let i=index" id="eduDetails">
                 <!-- address header, show remove button when more than one address available -->
                 <div  class="panel-heading">
-                    <span>Education Details  <span style="margin-left: 10%" *ngIf="addForm.controls.education.controls.length > 1 && !gotUpdateRequest" (click)="removeEdu(i)"> <i>&#10006;</i>
+                    <span>Education Details  <span style="margin-left: 10%" *ngIf="addForm.controls.education.controls.length > 1" (click)="removeEdu(i)"> <i>&#10006;</i>
                     </span></span><br>  
                 </div>
     

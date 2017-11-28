@@ -43,17 +43,37 @@ export class UserInfoService {
     console.log(formData);
     return this.http.post(' http://localhost:4000/register',formData).map(res => res.json())
   }
+  headers(){
+    let headers = new Headers();
+    headers.append('authorization','Bearer '+ this.userToken);
+    headers.append('content-Type', 'application/json');
+    
+    var options = new RequestOptions({ headers: headers });
+    return options;
+  }
+  getDashboard(){
+    let requestNetwork = {"channelName":"acadamics","chaincodeName":"rchain","version":"v1"}
+    let formdata = {"fcn":"getallrequests","args":[]}
+    return this.http.post(' http://localhost:4000/channels/'+requestNetwork.channelName+'/chaincodes/'+requestNetwork.chaincodeName+'',formdata,this.headers()).map(res => res.json())
+
+  }
   registerToNetwork(formdata){
     let form = {"username":"admin","passkey":"adminpw","orgName":"org1"};
-   return this.enrollUSer(form).subscribe(res => { 
+    console.log("got in registry :",formdata)
+    this.enrollUSer(form).subscribe(res => { 
       let token = res.token;
       let headers = new Headers();
       headers.append('authorization','Bearer '+token);
       headers.append('content-Type', 'application/json');
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(' http://localhost:4000/channels/mainchannel/chaincodes/chain1',formdata,options).map(res => res.json())
-    });
-
+      this.http.post('http://localhost:4000/channels/mainchannel/chaincodes/getinfochain2',formdata,options).subscribe(res =>{
+        console.log(res);
+      })
+    });2
+  }
+  getUserDetailsFromNetwork(){
+    let formdata = {"fcn":"getPersonalInfo","args":[]}
+    return this.http.post('http://localhost:4000/channels/mainchannel/chaincodes/getinfochain2',formdata,this.headers()).map(res => res.json());
   }
   
 }

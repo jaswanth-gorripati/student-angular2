@@ -1,6 +1,42 @@
 <div class="container">
-
-  <table class="table table-bodered" *ngIf="accounType == 'student'">
+  <div class="row">
+      <div>
+          <img   class="image" style="height:200px;width:200px;border-radius:50%">
+      </div>
+      <div class="col-sm-8">
+        <div class="row">
+          <div class="col-sm-3"><b><label>ID</label></b></div><b>:</b>
+          <div class="col-sm-7">{{user.id}}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3"><label><b>Name</b></label></div><b>:</b>
+          <div class="col-sm-7">{{user.name}}</div>
+        </div>
+        <div class="row" *ngIf="accounType == 'student'">
+          <div class="col-sm-3"><label><b>Studying In </b></label></div><b>:</b>
+          <div class="col-sm-7">{{user.studyingIn}}</div>
+        </div>
+        <div class="row" *ngIf="accounType != 'student'">
+          <div class="col-sm-3"><label><b>Works In </b></label></div><b>:</b>
+          <div class="col-sm-7">{{user.worksin}}</div>
+        </div>
+        <div class="row" *ngIf="accounType != 'student'">
+          <div class="col-sm-3"><label><b>Designation </b></label></div><b>:</b>
+          <div class="col-sm-7">{{user.position}}</div>
+        </div>
+        <div class="row" *ngIf="accounType != 'student'">
+          <div class="col-sm-3"><label><b>Have Admin Rights </b></label></div><b>:</b>
+          <div class="col-sm-7">{{user.isAdmin}}</div>
+        </div>
+        <br *ngIf="accounType == 'student'"><br *ngIf="accounType == 'student'">
+        <div class="row">
+          <div class="col-sm-3"><button class="btn btn-outline-info">View My Information On the Network</button></div>
+        </div>
+      </div>
+      
+  </div> <br><br>
+  
+  <!--<table class="table table-bodered" *ngIf="accounType == 'student'">
     <tr>
       <td><label class="bold">ID :</label></td><td>:</td><td>{{user.id}}</td>
       <td><label>Name </label></td><td>:</td><td>{{user.name}}</td>
@@ -20,7 +56,7 @@
         <td><label>Has admin rights </label></td><td>:</td><td>{{user.isAdmin}}</td>
       </tr>
     </table>
-  <!--<table class="table table-bodered">
+  <table class="table table-bodered">
     <tr><td class="edu" colspan="100%"><a class="col-sm-4">Pending Requests</a><a class="col-sm-4">Approved Requests</a><a class="col-sm-4">Rejectd Requests</a></td></tr>
     <tr class="heading"> <td>Degree</td><td>Board</td><td>College Name</td><td>Score</td><td>College Code</td><td> Actions </td></tr>
     <tr *ngFor="let edu of details.education" class="info">
@@ -48,30 +84,37 @@
   </div><br><br>
   <div class="container col-sm-12 tp" *ngIf="form[0]">
     <table class="table table-hover tp">
-      <tr class="heading"> <td>Student ID</td><td>Request Type</td><td> Degree </td><td>Score</td><td>Passed Out Year</td><td> Actions </td></tr>
-      <tr *ngFor="let edu of details.education" class="info">
+      <tr class="heading"> <td *ngIf="accounType != 'student'">Student ID</td><td>Request Type</td><td> Degree </td><td>Institution</td><td>Location</td><td>Score</td><td>Passed Out Year</td><td>Requested Time</td><td> Actions </td></tr>
+      <tr *ngFor="let edu of userRequests.pending;let i=index" class="info">
         
-          <td><span> {{edu.degree}} </span></td>
-          <td><span>{{edu.board}}</span></td>
-          <td><span>{{edu.clgName}}</span></td>
-          <td><span>{{edu.score}}</span></td>
-          <td><span>{{edu.clgCode}}</span></td>
-          <td><button class="btn btn-outline-info"> Approve </button>&nbsp;&nbsp;&nbsp;<button class="btn btn-outline-danger"> Reject </button></td>
+          <td *ngIf="accounType != 'student'"><span> {{edu.studentId}} </span></td>
+          <td><span>{{edu.RequestType}}</span></td>
+          <td><span>{{edu.degree}}</span></td>
+          <td><span>{{edu.clgname}}</span></td>
+          <td>{{edu.location}}</td>
+          <td><span>{{edu.Percentage}}</span></td>
+          <td><span>{{edu.yop}}</span></td>
+          <td><span>{{edu.timeenrolled | date}}</span></td>
+          <td *ngIf="accounType != 'student'"><button class="btn btn-outline-info" (click)="approve(i)"> Approve </button>&nbsp;&nbsp;&nbsp;<button class="btn btn-outline-danger" (click)="reject(i)"> Reject </button></td>
       </tr>
     </table>
   </div>
   <div class="container col-sm-12 tp" *ngIf="form[1]">
     <table class="table table-hover tp">
       <thead>
-          <tr class="heading"> <td>Student ID</td><td>Request Type</td><td> Degree </td><td>Score</td><td>Passed Out Year</td><td> Status </td></tr>
+          <tr class="heading"> <td *ngIf="accounType != 'student'">Student ID</td><td>Request Type</td><td> Degree </td><td>Institution</td><td>Location</td><td>Score</td><td>Passed Out Year</td><td>Requested Time</td><td> Status </td></tr>
       </thead>
      <tbody class="tp">
-        <tr *ngFor="let edu of details.education" class="info">
-              <td><span> {{edu.degree}} </span></td>
-              <td><span>{{edu.board}}</span></td>
-              <td><span>{{edu.clgName}}</span></td>
-              <td><span>{{edu.score}}</span></td>
-              <td><span>{{edu.clgCode}}</span></td>
+        <tr *ngFor="let edu of userRequests.approved;let i=index" class="info">
+            
+              <td *ngIf="accounType != 'student'"><span> {{edu.studentId}} </span></td>
+              <td><span>{{edu.RequestType}}</span></td>
+              <td><span>{{edu.degree}}</span></td>
+              <td><span>{{edu.clgname}}</span></td>
+              <td>{{edu.location}}</td>
+              <td><span>{{edu.Percentage}}</span></td>
+              <td><span>{{edu.yop}}</span></td>
+              <td><span>{{edu.timeenrolled | date}}</span></td>
               <td><h5 class="btn btn-info" disabled> Approved </h5></td>
           </tr>
      </tbody>
@@ -79,14 +122,17 @@
   </div>
   <div class="container col-sm-12 tp" *ngIf="form[2]">
     <table class="table table-hover">
-        <tr class="heading"> <td>Student ID</td><td>Request Type</td><td> Degree </td><td>Score</td><td>Passed Out Year</td><td> Status </td></tr>
-      <tr *ngFor="let edu of details.education" class="info">
-        
-          <td><span> {{edu.degree}} </span></td>
-          <td><span>{{edu.board}}</span></td>
-          <td><span>{{edu.clgName}}</span></td>
-          <td><span>{{edu.score}}</span></td>
-          <td><span>{{edu.clgCode}}</span></td>
+        <tr class="heading"> <td *ngIf="accounType != 'student'">Student ID</td><td>Request Type</td><td> Degree </td><td>Institution</td><td>Location</td><td>Score</td><td>Passed Out Year</td><td>Requested Time</td><td> Status </td></tr>
+        <tr *ngFor="let edu of userRequests.rejected;let i=index" class="info">
+            
+              <td *ngIf="accounType != 'student'"><span> {{edu.studentId}} </span></td>
+              <td><span>{{edu.RequestType}}</span></td>
+              <td><span>{{edu.degree}}</span></td>
+              <td><span>{{edu.clgname}}</span></td>
+              <td>{{edu.location}}</td>
+              <td><span>{{edu.Percentage}}</span></td>
+              <td><span>{{edu.yop}}</span></td>
+              <td><span>{{edu.timeenrolled | date}}</span></td>
           <td><h5 class="btn btn-danger" disabled> Rejected </h5></td>
       </tr>
     </table>
