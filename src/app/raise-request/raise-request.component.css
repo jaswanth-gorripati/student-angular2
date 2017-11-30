@@ -19,7 +19,7 @@
    font-weight: bolder;
 }
 .contentDivs{
-    margin-left: 25%; 
+    margin-left: 23%;
     margin-top: 10px;
 }
 .contentDivs button{
@@ -55,6 +55,7 @@
 }
 .ll{
     margin-top:25px;
+    margin-left:10px;
 }
 .card{
     border: 1rem solid black;
@@ -70,4 +71,27 @@
 }
 #eduDetails{
     border: 2px rgb(218, 212, 212);
+}
+.vertical-menu {
+    width: 350px;
+    position:fixed;
+}
+
+.vertical-menu label {
+    background-color: #eee;
+    color: black;
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    border-radius:10px;
+    margin-left:2px;
+}
+
+.vertical-menu label:hover {
+    background-color: #ccc;
+}
+
+.vertical-menu label.active {
+    background-color: #0c5460;
+    color: white;
 }

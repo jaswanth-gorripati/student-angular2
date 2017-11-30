@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpModule,Http,Headers,RequestOptions } from '@angular/http';
+import { HttpModule,Http,Headers,RequestOptions,Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -52,9 +52,9 @@ export class UserInfoService {
     return options;
   }
   getDashboard(){
-    let requestNetwork = {"channelName":"acadamics","chaincodeName":"rchain","version":"v1"}
+    let requestNetwork = {"channelName":"acadamics","chaincodeName":"rchain","version":"v2"}
     let formdata = {"fcn":"getallrequests","args":[]}
-    return this.http.post(' http://localhost:4000/channels/'+requestNetwork.channelName+'/chaincodes/'+requestNetwork.chaincodeName+'',formdata,this.headers()).map(res => res.json())
+    return this.http.post(' http://localhost:4000/channels/'+requestNetwork.channelName+'/chaincodes/'+requestNetwork.chaincodeName+'',formdata,this.headers()).map(res => res.json());
 
   }
   registerToNetwork(formdata){
@@ -66,14 +66,14 @@ export class UserInfoService {
       headers.append('authorization','Bearer '+token);
       headers.append('content-Type', 'application/json');
       let options = new RequestOptions({ headers: headers });
-      this.http.post('http://localhost:4000/channels/mainchannel/chaincodes/getinfochain2',formdata,options).subscribe(res =>{
+      this.http.post('http://localhost:4000/channels/mainchannel/chaincodes/getinfochain',formdata,options).subscribe(res =>{
         console.log(res);
       })
     });2
   }
   getUserDetailsFromNetwork(){
     let formdata = {"fcn":"getPersonalInfo","args":[]}
-    return this.http.post('http://localhost:4000/channels/mainchannel/chaincodes/getinfochain2',formdata,this.headers()).map(res => res.json());
+    return this.http.post('http://localhost:4000/channels/mainchannel/chaincodes/getinfochain',formdata,this.headers()).map(res => res.json());
   }
   
 }

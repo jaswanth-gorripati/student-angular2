@@ -22,6 +22,10 @@ export class AppComponent {
     this.loggedIn = $event;
     this.isAdmin = this.userInfo.isAdmin();
     this.AccountType = this.userInfo.AccountType();
-    this.router.navigate(["/dashboard"]);
+    this.user = this.userInfo.getUserName();
+    if(this.user=="admin"){
+      this.router.navigate(["/admindash"]);
+    }else
+      this.router.navigate(["/dashboard"]);
   }
 }

@@ -16,6 +16,7 @@ export class RaiseRequestComponent implements OnInit {
   userDetailsInNetwork:any;
   isValidRequest = false;
   accountType:any;
+  idFound = false;
   acadamicNetwork:any = {"peers":['peer1','peer2'],"channelName":'acadamics',"chaincodeName":"mycc"}
   constructor(public fb: FormBuilder,private userInfo: UserInfoService,private addOrUpdate: AddUpdateStudentDetailsService) {
     this.token = this.userInfo.getUserToken();
@@ -29,14 +30,17 @@ export class RaiseRequestComponent implements OnInit {
 
   ngOnInit() {
     this.request(0);
+    this.addRequest();
     this.userInfo.getUserDetailsFromNetwork().subscribe(res =>{
       console.log(res);
       this.userDetailsInNetwork = res[0].Details;
       console.log("userDetails:",this.userDetailsInNetwork)
-      for(let i=0;i<this.userDetailsInNetwork.education.length;i++){
-        this.eduOptions.push(this.userDetailsInNetwork.education[i].degree);
+      if(this.userDetailsInNetwork.education != undefined){
+        for(let i=0;i<this.userDetailsInNetwork.education.length;i++){
+          this.eduOptions.push(this.userDetailsInNetwork.education[i].degree);
+        }
+        console.log("eduoptions:",this.eduOptions);
       }
-      console.log("eduoptions:",this.eduOptions);
     })
   }
   request(index){
@@ -45,6 +49,33 @@ export class RaiseRequestComponent implements OnInit {
       if(i!=index){
         this.forms[i]=0;
       }
+    }
+  }
+  forSUE(){
+    if(this.accountType=="student" || this.accountType ==="employee" || (this.accountType === "universityStaff"))
+      return true;
+    else
+      return false;
+  }
+  forSE(){
+    if(this.accountType=="student" || this.accountType ==="employee")
+      return true;
+    else
+      return false;
+  }
+  forSEE(){
+    if(this.accountType ==="employee" || (this.accountType === "employer"))
+      return true;
+    else
+      return false;
+    
+  }
+  forAdmins(){
+    if(this.forms[0]){
+      if(this.accountType !="employee" && this.accountType != "student")
+        return true;
+      else
+        return false;
     }
   }
   public isUniqueID = this.fb.group({
@@ -58,41 +89,79 @@ export class RaiseRequestComponent implements OnInit {
     fcn:["getHistory",Validators.required],
     args:[[]],
   });
-  
+
   gotAddRequest = false;
   addWithPersonal = false;
   addEduDetails = false;
   addEduIndex:any;
   addRequest(){
-    this.setPeers();
-    this.gotAddRequest = true;
-    this.gotUpdateRequest =false;
-    this.addEduDetails = true;
-    console.log("index :",this.addEduIndex)
-    this.isValidRequest = true;
-    /*this.isUniqueID.controls['args'].setValue([""+this.isUniqueID.controls.uniqueId.value+""]);
-    let submitForm = {"fcn":"getHistory","args":[this.isUniqueID.controls.uniqueId.value]}
-    this.addOrUpdate.isStudentExists(this.isUniqueID.value,submitForm).subscribe(res =>{
-      console.log("from add Request: ",res);
-      if(res[0] != undefined){
-        this.addEduDetails = true;
-        this.addEduIndex = res[res.length-1].StudentDetails.education.length-1;
-      }else{
-        this.addWithPersonal = true;
-        this.addEduIndex = 0;
-      }
+    this.cancel();
+    if(this.accountType != "employee" && this.accountType != "student"){
+      this.isValidRequest = false;
+      this.gotAddRequest = true;
+    }else{
+      this.setPeers();
+      this.request(0);
+      this.gotAddRequest = true;
+      this.addEduDetails = true;
       console.log("index :",this.addEduIndex)
       this.isValidRequest = true;
-    })*/
+      /*this.isUniqueID.controls['args'].setValue([""+this.isUniqueID.controls.uniqueId.value+""]);
+      let submitForm = {"fcn":"getHistory","args":[this.isUniqueID.controls.uniqueId.value]}
+      this.addOrUpdate.isStudentExists(this.isUniqueID.value,submitForm).subscribe(res =>{
+        console.log("from add Request: ",res);
+        if(res[0] != undefined){
+          this.addEduDetails = true;
+          this.addEduIndex = res[res.length-1].StudentDetails.education.length-1;
+        }else{
+          this.addWithPersonal = true;
+          this.addEduIndex = 0;
+        }
+        console.log("index :",this.addEduIndex)
+        this.isValidRequest = true;
+      })*/
+    }
+  }
+  forAdminrequest(){
+    this.idFound = true;
+    this.addEduDetails = true;
+    this.isValidRequest = true;
   }
   gotUpdateRequest = false;
   updateEduIndexes:any;
   tempEduDetails:any;
   eduOptions:any = [];
   updateRequest(){
-    this.setPeers();
-    this.gotUpdateRequest = true;
-    this.gotAddRequest = false;
+    this.cancel();
+    if(this.accountType != "employee" && this.accountType != "student"){
+      this.isValidRequest = true;
+      this.gotUpdateRequest = true;
+    }else{
+      this.request(0);
+      this.setPeers();
+      this.gotUpdateRequest = true;
+    }
+  }
+  gotAddWork = false;
+  gotUpdateWork = false;
+  addWorkRequest(){
+    this.request(2);
+    this.cancel()
+    this.gotAddWork = true;
+  }
+  updateWorkRequest(){
+    this.request(2);
+    this.cancel();
+    this.gotUpdateWork = true;
+  }
+  personalUpdate = false;
+  editProfile(){
+    this.cancel()
+    this.personalUpdate = true;
+  }
+  cancelWorkInfo(){
+    this.gotAddWork = false;
+    this.gotUpdateWork = false;
   }
   eduToEdit:any;
   getEduForm(){
@@ -120,6 +189,10 @@ export class RaiseRequestComponent implements OnInit {
     console.log(this.isUniqueID.value);
   }
   cancel(){
+    this.idFound = false;
+    this.personalUpdate = false
+    this.gotAddWork = false;
+    this.gotUpdateWork = false;
     this.addWithPersonal = false;
     this.addEduDetails =false;
     this.isValidRequest =false;
@@ -128,6 +201,26 @@ export class RaiseRequestComponent implements OnInit {
     this.gotAddRequest = false;
     this.gotUpdateRequest = false;
     this.eduToEdit = "";
+  }
+  public workForm = this.fb.group({
+    experience: this.fb.array([
+      this.initWork(),
+    ])
+  });
+  gotExpAddRequest:any = false;
+  gotExpUpdateRequest:any = false;
+  initWork(){
+    return this.fb.group({
+      designation:["",Validators.required],
+      yearOfJoining:["",Validators.required],
+      companyName:["",Validators.required],
+      location:["",Validators.required],
+      dor:[""],
+      stillWorking:[false]
+     });
+  }
+  updateExpRequest(){
+
   }
   public addForm = this.fb.group({
     name:["",Validators.required],
@@ -159,6 +252,17 @@ export class RaiseRequestComponent implements OnInit {
       const control = <FormArray>this.addForm.controls['education'];
       control.removeAt(i);
   }
+  addWork() {
+    // add address to the list
+    const control = <FormArray>this.workForm.controls['experience'];
+    control.push(this.initWork());
+}
+
+removeWork(i: number) {
+    // remove address from the list
+    const control = <FormArray>this.workForm.controls['experience'];
+    control.removeAt(i);
+}
   setPeers(){
     if(this.isUniqueID.controls.peer1.value == true && this.isUniqueID.controls.peer2.value != true  ){
       this.isUniqueID.controls['peers'].setValue(['peer1']);
@@ -207,7 +311,6 @@ export class RaiseRequestComponent implements OnInit {
       this.submitAdd(submitForm)
       this.addForm.controls.education.reset();
     }  
-    
   }
   Success = false;
   submitAdd(submitForm){

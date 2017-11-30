@@ -106,12 +106,12 @@ clearFiles(){
     this.userInfo.registerUser(this.registerForm.value).subscribe(res => {
       console.log(res);
       if(res.success){
-        
+        if(this.registerForm.controls.aType.value === "student" || this.registerForm.controls.aType.value ==="employee"){
           let submitForm = {"fcn":"register","args":[this.registerForm.controls.uniqueid.value,this.registerForm.controls.profilePic.value,this.registerForm.controls.username.value,this.registerForm.controls.dob.value,this.registerForm.controls.gender.value,this.registerForm.controls.email.value,this.registerForm.controls.aType.value]}
           this.userInfo.registerToNetwork(submitForm)
-       
-        alert("Registration Successfull .. Can Login Now")
-        this.login = true;
+          alert("Registration Successfull .. Can Login Now")
+          this.login = true;
+        }
       }
     });
   }

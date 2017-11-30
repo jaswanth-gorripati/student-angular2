@@ -1,45 +1,34 @@
 <div class="row" style="min-height:100%">
-  <!-- Side NAV BAR 
-    <div class="sidebar col-sm-2">
-      <label (click)="request(0)" [ngClass]="{'active':forms[0]}">Education details</label><br>
-      <label (click)="request(1)" [ngClass]="{'active':forms[1]}">Work Details</label><br>
+    <div class="vertical-menu col-sm-3 fixed" >
+      <label *ngIf="forSUE()"  (click)="addRequest()" [ngClass]="{'active':gotAddRequest}">Add Education </label>
+      <label *ngIf="forSE()" (click)="updateRequest()" [ngClass]="{'active':gotUpdateRequest}">Update Education Details</label>
+      <label *ngIf="forSEE()" (click)="addWorkRequest()" [ngClass]="{'active':gotAddWork}">Add Work Information</label>
+      <label *ngIf="accountType == 'employee'" (click)="updateWorkRequest()" [ngClass]="{'active':gotUpdateWork}">Update Working Information</label>
+      <label (click)="editProfile()" [ngClass]="{'active':personalUpdate}">Update Personal Information</label>
     </div>
-  -->
-    <div class="contentDivs col-sm-7" *ngIf="forms[0]">
-      <h3 class="text-center cursive"> Education Details</h3><hr>
-      <form class="form-group" style="padding:10px" [formGroup]="isUniqueID" (ngSubmit)="isExists($event)">
-        <input *ngIf="user.accountType != 'student'" class="form-control mr-sm-2" formControlName="uniqueId" type="text" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
-        <small *ngIf="user.accountType != 'student'" id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
-       <!-- NETWORK INFORMATION 
-          <div class="row formDiv"  *ngIf="user.accountType != 'student'">
-          <div id="networkDetails" class="row">
-            <input class="form-control col-sm-3 mr-sm-2 lr" formControlName="channelName" type="text" placeholder=" Channel Name " ><br>
-            <input class="form-control col-sm-3 mr-sm-2 lr" formControlName="chaincodeName" type="text" placeholder=" Chaincode Name " ><br>
-            <input class="form-control col-sm-3 mr-sm-2 lr" formControlName="chaincodeVersion" type="text" placeholder=" Chaincode version " ><br>
-          </div>  
-          <div class="col-sm-12">
-            <label class="cursive ll" >Select on which peers to add details</label><br>
-            <input type="checkbox" formControlName="peer1" value="peer1"> peer1 &nbsp;
-            <input type="checkbox" formControlName="peer2" value="peer2"> peer2 <br><br>
-          </div>
-        </div>-->
-        <div class="ll" *ngIf="!isValidRequest && (!gotUpdateRequest && !gotAddRequest) ">
-          <button class="btn btn-outline-info col-sm-4 decider" (click)="addRequest()" type="submit" >Add details</button>
-          <button class="btn btn-outline-info col-sm-4 decider1" (click)="updateRequest()" type="submit">Update details</button>
+    <div class="col-sm-1"></div>
+    <div class="contentDivs col-sm-6" *ngIf="forms[0]">
+      
+      <div class="form-group"   *ngIf="idFound == false">
+        <input *ngIf="forAdmins()" class="form-control mr-sm-2" type="text" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
+        <small *ngIf="forAdmins()" id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
+        <div class="ll" *ngIf="!isValidRequest && (!gotUpdateRequest || !gotAddRequest) ">
+          <button class="btn btn-outline-info col-sm-4 decider" *ngIf="forAdmins()  " (click)="forAdminrequest()"  type="submit" >Add details</button>
         </div> 
-      </form>
+      </div>
       <div *ngIf="gotUpdateRequest && !isValidRequest" class="row" >
         <select class="form-control col-sm-5 lr" id="sel1" [(ngModel)]="eduToEdit">
+          <option hidden="true">- Select Degree - </option>
           <option *ngFor="let edu of eduOptions">{{edu}}</option>
         </select>
        
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button  style="margin-top:3% !important" class="btn btn-outline-info my-sm-1" (click)="getEduForm()">Get Update Form</button>&nbsp;&nbsp;&nbsp;
-        <button class="btn btn-outline-danger col-sm-2" style="height: 39px;margin-top:22px;" type="button" (click)="cancel()" > Cancel </button>
+        <!--<button class="btn btn-outline-danger col-sm-2" style="height: 39px;margin-top:22px;" type="button" (click)="cancel()" > Cancel </button>-->
       </div>
       <div class="detailsForm" *ngIf="isValidRequest">
-        <form class="form-group" style="padding:10px" [formGroup]="addForm" (ngSubmit)="addDetails($event)">
-          <div id="PersonalDetails" class="row" *ngIf="addWithPersonal">
+        <form class="form-group" style="margin-top:-26px" [formGroup]="addForm" (ngSubmit)="addDetails($event)">
+          <!--<div id="PersonalDetails" class="row" *ngIf="addWithPersonal">
             <div class="panel-heading col-sm-12">
               <label><span>Personal Details</span></label><br>
             </div>
@@ -58,7 +47,7 @@
                 <input type="radio" formControlName="gender" id="gender" value="female"> Female <br><br> 
               </div>
             </div>
-          </div>
+          </div>-->
           <div id="eduForm" class="row" *ngIf="addWithPersonal || addEduDetails">
             <div formArrayName="education" >
               <div *ngFor="let education of addForm.controls.education.controls; let i=index" id="eduDetails">
@@ -92,7 +81,7 @@
                         <label for="CmpltdYr">Completed Year</label>
                         <input id="CmpltdYr" class="form-control col-sm-12 mr-sm-2 " formControlName="completedYear" type="text" placeholder="completed year " ><br>
                     </div>
-                  </div><br><br>
+                  </div><br>
                 <div>
                 </div>
               </div>
@@ -114,28 +103,29 @@
                   <h4 style="display:inline">+</h4>  Add more Education Details 
               </a>
             </div>
-            <div class="ll">
+            <div class="ll" style="margin-left:1.2rem">
               <button class="btn btn-outline-info col-sm-4" type="submit"  *ngIf="gotAddRequest">Add</button>
-              <button class="btn btn-outline-info col-sm-4" type="submit" *ngIf="gotUpdateRequest" >Update</button>
-              <button class="btn btn-outline-danger col-sm-4" type="button" (click)="cancel()" *ngIf="gotAddRequest || gotUpdateRequest" > Cancel </button>
+              <button class="btn btn-outline-info col-sm-4" type="submit" *ngIf="gotUpdateRequest">Update</button>
+              <button class="btn btn-outline-danger col-sm-4" type="button" (click)="updateRequest()" *ngIf=" gotUpdateRequest" > Cancel </button>
             </div>
           </div> 
           </div>
         </form>
       </div>
-     <!-- <div class="contentDivs col-sm-7" *ngIf="forms[1]">
+      
+     <div class="contentDivs col-sm-7" *ngIf="forms[1]">
         <h3 class="text-center cursive"> Work Details</h3><hr>
         <form class="form-group" style="padding:10px">
           <input class="form-control mr-sm-2" type="text" placeholder=" Enter Employees Unique ID" aria-describedby="passHelp">
           <small id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
           <div class="row formDiv">
-            <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Working Started " ><br>
-            <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Working Started " ><br>
-            <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Enter Designation Name " ><br>
-            <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder="company name " ><br>
-            <input class="form-control col-sm-5 mr-sm-2 ll" type="text" placeholder=" location " ><br>
-        
-          </div>
+              <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Oraganisation " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Designation " ><br>
+              <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Location " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Date of Joing " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 ll" type="text" placeholder=" Still Working " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Date Of Relieving" ><br>
+            </div>
           <div class="ll">
             <button class="btn btn-outline-info col-sm-4 decider"  >Add To Network</button>
             <button class="btn btn-outline-info col-sm-4 decider1" >Update</button><hr>
@@ -170,21 +160,21 @@
           </div> 
         </form>
         <form class="form-group" style="padding:10px" *ngIf="formof==='work'">
-            <input class="form-control mr-sm-2" type="text" placeholder=" Enter Employees Unique ID" aria-describedby="passHelp">
-            <small id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
+            <input class="form-control mr-sm-2" *ngIf="user.accountType != 'employee'" type="text" placeholder=" Enter Employees Unique ID" aria-describedby="passHelp">
+            <small id="passHelp" *ngIf="user.accountType != 'employee'" class="form-text text-muted">Make sure unique id is of desired candidate</small>
             <div class="row formDiv">
-              <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Working Started " ><br>
-              <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Working Started " ><br>
-              <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Enter Designation Name " ><br>
-              <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder="company name " ><br>
-              <input class="form-control col-sm-5 mr-sm-2 ll" type="text" placeholder=" location " ><br>
-          
+              <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Oraganisation " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Designation " ><br>
+              <input class="form-control col-sm-6 mr-sm-2 ll" type="text" placeholder=" Location " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Date of Joing " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 ll" type="text" placeholder=" Still Working " ><br>
+              <input class="form-control col-sm-5 mr-sm-2 lr" type="text" placeholder=" Date Of Relieving" ><br>
             </div>
             <div class="ll">
               <button class="btn btn-outline-info col-sm-4 decider"  >Request to Add</button>
               <button class="btn btn-outline-info col-sm-4 decider1" >Request to Update</button><hr>
             </div>
           </form>
-    </div>-->
+    </div>
   </div>
   

@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
   userContent(){
     if(this.user.name != 'admin'){
       this.userInfo.getDashboard().subscribe(res=>{
-        console.log("USer Requests : ",res)
+        console.log("User Requests : ",res)
         for(let i=0;i<res.length;i++){
           if(res[i].Details.status == "pending"){
             this.userRequests.pending.push(res[i].Details);

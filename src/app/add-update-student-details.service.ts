@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AddUpdateStudentDetailsService {
-  requestNetwork = {"channelName":"acadamics","chaincodeName":"rchain","version":"v1"}
+  requestNetwork = {"channelName":"acadamics","chaincodeName":"rchain","version":"v2"}
   token:any;
   constructor(private http:Http) { }
   setToken(token){
@@ -22,7 +22,7 @@ export class AddUpdateStudentDetailsService {
     return options;
   }
   isStudentExists(network,form){
-    return this.http.post(' http://localhost:4000/channels/'+network.channelName+'/chaincodes/'+network.chaincodeName+'',form,this.headers()).map(res => res.json())
+    return this.http.post(' http://localhost:4000/channels/main/chaincodes/getinfochain',form,this.headers()).map(res => res.json())
   }
   addDetails(formdata){
     return this.http.post(' http://localhost:4000/channels/'+this.requestNetwork.channelName+'/chaincodes/'+this.requestNetwork.chaincodeName+'',formdata,this.headers()).map(res => res.text())
@@ -34,7 +34,7 @@ export class AddUpdateStudentDetailsService {
       console.log(res.text())
       if(res.text() === ""){
         let mainData = {"fcn":"addEducation","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7]]}
-        this.http.post(' http://localhost:4000/channels/mainchannel/chaincodes/getinfochain2',mainData,this.headers()).subscribe(res =>{
+        this.http.post(' http://localhost:4000/channels/mainchannel/chaincodes/getinfochain',mainData,this.headers()).subscribe(res =>{
           console.log("From main add",res.text())
           if(res.text() == ""){
             alert("Approved");

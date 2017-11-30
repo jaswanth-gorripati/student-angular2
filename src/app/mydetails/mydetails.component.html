@@ -1,4 +1,70 @@
-<div class="container">
-  <h3 class="jumbotron"> Working ON IT</h3>
+<div>
+<div class="row" [ngClass]="isLoading === false?'':'loadingBG'">
+  <div class="container row col-sm-4" *ngIf="isLoading === false">
+    <div class="card" style="width:250px;margin-left:20%;">
+      <img class="card-img-top image" alt="User image" style="width:250px;height:250px">
+      <div class="card-body">
+        <h4 class="card-title">{{userDetailsInNetwork?.username}}</h4>
+        <h6 class="card-title">{{userDetailsInNetwork?.DateOfBirth | date}}</h6>
+        <h6 class="card-title">{{userDetailsInNetwork?.gender}}</h6>
+        <h6 class="card-title">{{userDetailsInNetwork?.profession}}</h6>
+        <h6 class="card-title">{{userDetailsInNetwork?.Email}}</h6>
+      </div>
+    </div>
+  </div>
+  <div class="container col-sm-7 tp">
+    <table class="table table-hover tp">
+        <thead class="ns" *ngIf="userDetailsInNetwork?.education != null">
+            <tr class="heading"> <th> Degree </th><th>Institution</th><th>Location</th><th>Score</th><th>Passed Out Year</th><th> Actions </th></tr>
+        </thead>
+        <tbody class="as" *ngIf="userDetailsInNetwork?.education != null">
+          <tr  class="info" *ngFor="let edu of userDetailsInNetwork?.education">
+              <td><span>{{edu.degree}}</span></td>
+              <td><span>{{edu.Institute}}</span></td>
+              <td>Hyderabad</td>
+              <td><span>{{edu.score}}</span></td>
+              <td><span>{{edu.yearOfPassout}}</span></td>
+              <td><button class="btn btn-outline-info"> Update </button></td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="userDetailsInNetwork?.education == null">
+          <tr>
+            <td> No Education details Added to Network.To Request now Click <a routerLink="/requests" routerLinkActive="active"> Here </a></td>
+          </tr>
+        </tbody>
+        
+    </table>
+  </div>
+  <div class="container col-sm-7 vf">
+      <table class="table table-hover tp">
+        <thead class="ns" *ngIf="userDetailsInNetwork?.experience != null">
+            <tr class="heading"> <th> Designation </th><th>Oganisation</th><th>Location</th><th>Joining Year</th><th>Releaved data</th><th> Actions </th></tr>
+        </thead>
+        <tbody class="as" *ngIf="userDetailsInNetwork?.experience != null">
+          <tr  class="info">
+              <td><span>sdkfjh</span></td>
+              <td><span>dfkjdk</span></td>
+              <td>dfl.kjdh</td>
+              <td><span>65</span></td>
+              <td style="table-layout:auto !important; "><span>2012</span></td>
+              <td><button class="btn btn-outline-danger" (click)="reject(i)"> Reject </button></td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="userDetailsInNetwork?.experience == null">
+          <tr>
+            <td> No Working details Added to Network.To Request now Click <a routerLink="/requests" routerLinkActive="active"> Here </a></td>
+          </tr>
+        </tbody>
+        
+      </table>
+    </div>
+</div>
+<div [ngClass]="isLoading === false?'':'overlay'">
+  	<div [ngClass]="isLoading === false?'':'loadingFG'">
+ 	</div>
+ 	<div *ngIf="isLoading=== true" style="z-index: 3;margin:25% -5%;">
+ 		Loading...
+ 	</div>
+<div>
 </div>
 
