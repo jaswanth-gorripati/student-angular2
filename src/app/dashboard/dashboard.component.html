@@ -24,7 +24,7 @@
           <div class="col-sm-3"><label><b>Designation </b></label></div><b>:</b>
           <div class="col-sm-7">{{user.position}}</div>
         </div>
-        <div class="row" *ngIf="accounType != 'student'">
+        <div class="row" *ngIf="adminRightsInfo()">
           <div class="col-sm-3"><label><b>Have Admin Rights </b></label></div><b>:</b>
           <div class="col-sm-7">{{user.isAdmin}}</div>
         </div>

@@ -28,4 +28,11 @@ export class AppComponent {
     }else
       this.router.navigate(["/dashboard"]);
   }
+  navDiff(){
+    if(this.AccountType == "student" || this.AccountType =="employee"){
+      return true;
+    }else{
+      return false;
+    }
+  }
 }

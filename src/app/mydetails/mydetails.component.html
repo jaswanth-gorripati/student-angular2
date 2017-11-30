@@ -1,6 +1,6 @@
 <div>
 <div class="row" [ngClass]="isLoading === false?'':'loadingBG'">
-  <div class="container row col-sm-4" *ngIf="isLoading === false">
+  <div class="container row col-sm-4">
     <div class="card" style="width:250px;margin-left:20%;">
       <img class="card-img-top image" alt="User image" style="width:250px;height:250px">
       <div class="card-body">
@@ -35,7 +35,7 @@
         
     </table>
   </div>
-  <div class="container col-sm-7 vf">
+  <div class="container col-sm-7 vf" *ngIf="accountType == 'employee'">
       <table class="table table-hover tp">
         <thead class="ns" *ngIf="userDetailsInNetwork?.experience != null">
             <tr class="heading"> <th> Designation </th><th>Oganisation</th><th>Location</th><th>Joining Year</th><th>Releaved data</th><th> Actions </th></tr>

@@ -11,11 +11,12 @@ export class MydetailsComponent implements OnInit {
 
   userDetailsInNetwork:any
   username:any
+  accountType:any;
   isLoading:boolean = true;
   constructor(private userInfo:UserInfoService,private element: ElementRef) { }
 
   ngOnInit() {
-
+    this.accountType = this.userInfo.AccountType();
     this.userInfo.getUserDetailsFromNetwork().subscribe(res =>{
       console.log(res);
       this.userDetailsInNetwork = res[0].Details;

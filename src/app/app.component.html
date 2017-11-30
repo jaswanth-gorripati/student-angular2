@@ -13,10 +13,10 @@
           <li class="nav-item">
               <a routerLink="/requests" class="nav-link" routerLinkActive="active">Raise request</a>
           </li>
-          <li class="nav-item" *ngIf="AccountType != 'student'">
+          <li class="nav-item" *ngIf="!navDiff()">
               <a routerLink="/search" class="nav-link" routerLinkActive="active">Search Information</a>
           </li>
-          <li class="nav-item" *ngIf="AccountType == 'student'">
+          <li class="nav-item" *ngIf="navDiff()">
               <a routerLink="/mydetails" class="nav-link" routerLinkActive="active"> My Details</a>
           </li>
           <li class="nav-item" *ngIf="isAdmin">

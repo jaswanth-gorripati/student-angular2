@@ -29,23 +29,30 @@ export class RaiseRequestComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.request(0);
-    this.addRequest();
-    this.userInfo.getUserDetailsFromNetwork().subscribe(res =>{
-      console.log(res);
-      this.userDetailsInNetwork = res[0].Details;
-      console.log("userDetails:",this.userDetailsInNetwork)
-      if(this.userDetailsInNetwork.education != undefined){
-        for(let i=0;i<this.userDetailsInNetwork.education.length;i++){
-          this.eduOptions.push(this.userDetailsInNetwork.education[i].degree);
+    if(this.accountType == "employer"){
+      this.request(1);
+      this.addWorkRequest();
+    }else{
+      this.request(0);
+      this.addRequest();
+    }
+    if(this.accountType == 'student'||this.accountType == 'employee'){
+      this.userInfo.getUserDetailsFromNetwork().subscribe(res =>{
+        console.log(res);
+        this.userDetailsInNetwork = res[0].Details;
+        console.log("userDetails:",this.userDetailsInNetwork)
+        if(this.userDetailsInNetwork.education != undefined){
+          for(let i=0;i<this.userDetailsInNetwork.education.length;i++){
+            this.eduOptions.push(this.userDetailsInNetwork.education[i].degree);
+          }
+          console.log("eduoptions:",this.eduOptions);
         }
-        console.log("eduoptions:",this.eduOptions);
-      }
-    })
+      })
+    }
   }
   request(index){
     this.forms[index]=1;
-    for(let i=0;i<5;i++){
+    for(let i=0;i<4;i++){
       if(i!=index){
         this.forms[i]=0;
       }
@@ -72,8 +79,27 @@ export class RaiseRequestComponent implements OnInit {
   }
   forAdmins(){
     if(this.forms[0]){
-      if(this.accountType !="employee" && this.accountType != "student")
-        return true;
+      if(this.accountType !="employee" && this.accountType != "student"){
+        if( this.idFound == false){
+          return true;
+        }else{
+          return false;
+        }
+      }
+      else
+        return false;
+    }
+  }
+  workIdFound = false;
+  forWorkAdmins(){
+    if(this.forms[1]){
+      if(this.accountType =="employer"){
+        if( this.workIdFound == false){
+          return true;
+        }else{
+          return false;
+        }
+      }
       else
         return false;
     }
@@ -127,6 +153,11 @@ export class RaiseRequestComponent implements OnInit {
     this.addEduDetails = true;
     this.isValidRequest = true;
   }
+  forWorkAdminrequest(){
+    this.workIdFound = true;
+    this.addWorkDetailsForm = true;
+    this.isValidRequest = true;
+  }
   gotUpdateRequest = false;
   updateEduIndexes:any;
   tempEduDetails:any;
@@ -142,26 +173,42 @@ export class RaiseRequestComponent implements OnInit {
       this.gotUpdateRequest = true;
     }
   }
-  gotAddWork = false;
-  gotUpdateWork = false;
+  gotExpAddRequest = false;
+  gotExpUpdateRequest = false;
+  addWorkDetailsForm = false;
   addWorkRequest(){
-    this.request(2);
     this.cancel()
-    this.gotAddWork = true;
+    this.workIdFound =false;
+    if(this.accountType == "employer"){
+      this.request(1);
+      this.isValidRequest = false;
+      this.gotExpAddRequest = true;
+    }else{
+      this.setPeers();
+      this.request(1);
+      this.gotExpAddRequest = true;
+      this.addWorkDetailsForm = true;
+      this.isValidRequest = true;
+    }
   }
   updateWorkRequest(){
-    this.request(2);
     this.cancel();
-    this.gotUpdateWork = true;
+    if(this.accountType != "employee"){
+      this.isValidRequest = false;
+      this.gotExpUpdateRequest = true;
+    }else{
+      this.request(1);
+      this.setPeers();
+      this.gotExpUpdateRequest = true;
+    }
+  }
+  addworkDetails(){
+
   }
   personalUpdate = false;
   editProfile(){
     this.cancel()
     this.personalUpdate = true;
-  }
-  cancelWorkInfo(){
-    this.gotAddWork = false;
-    this.gotUpdateWork = false;
   }
   eduToEdit:any;
   getEduForm(){
@@ -191,12 +238,13 @@ export class RaiseRequestComponent implements OnInit {
   cancel(){
     this.idFound = false;
     this.personalUpdate = false
-    this.gotAddWork = false;
-    this.gotUpdateWork = false;
-    this.addWithPersonal = false;
+    this.gotExpAddRequest = false;
+    this.gotExpUpdateRequest = false;
+    this.addWorkDetailsForm = false;
     this.addEduDetails =false;
     this.isValidRequest =false;
     this.addForm.reset();
+    this.workForm.reset();
     this.isValidRequest = false;
     this.gotAddRequest = false;
     this.gotUpdateRequest = false;
@@ -207,8 +255,6 @@ export class RaiseRequestComponent implements OnInit {
       this.initWork(),
     ])
   });
-  gotExpAddRequest:any = false;
-  gotExpUpdateRequest:any = false;
   initWork(){
     return this.fb.group({
       designation:["",Validators.required],
@@ -256,13 +302,13 @@ export class RaiseRequestComponent implements OnInit {
     // add address to the list
     const control = <FormArray>this.workForm.controls['experience'];
     control.push(this.initWork());
-}
+  }
 
-removeWork(i: number) {
-    // remove address from the list
-    const control = <FormArray>this.workForm.controls['experience'];
-    control.removeAt(i);
-}
+  removeWork(i: number) {
+      // remove address from the list
+      const control = <FormArray>this.workForm.controls['experience'];
+      control.removeAt(i);
+  }
   setPeers(){
     if(this.isUniqueID.controls.peer1.value == true && this.isUniqueID.controls.peer2.value != true  ){
       this.isUniqueID.controls['peers'].setValue(['peer1']);
@@ -273,7 +319,7 @@ removeWork(i: number) {
     }
   }
   addDetails(event){
-   let submitForm = {'fcn':"","peers":[],"args":[],"channelName":"","chaincodeName":"","chaincodeVersion":""};
+    let submitForm = {'fcn':"","peers":[],"args":[],"channelName":"","chaincodeName":"","chaincodeVersion":""};
     this.setPeers()
     submitForm.peers=this.isUniqueID.controls.peers.value;
     submitForm.channelName = this.isUniqueID.controls.channelName.value;

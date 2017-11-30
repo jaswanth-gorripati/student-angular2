@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
     this.accounType = this.userInfo.AccountType();
     this.user = this.userInfo.getAttrs();
     this.user.name = this.userInfo.getUserName();
+    if(this.accounType )
     this.userContent();
   }
   userContent(){
@@ -48,12 +49,14 @@ export class DashboardComponent implements OnInit {
         }
         console.log("userREquests : ",this.userRequests )
       })
-      this.userInfo.getUserDetailsFromNetwork().subscribe(res =>{
-        console.log(res);
-        this.user.profilePic = res[0].Details.profilePic;
-        var image = this.element.nativeElement.querySelector('.image');
-        image.src = this.user.profilePic ;
-      })
+      if(this.accounType != "employer"){
+        this.userInfo.getUserDetailsFromNetwork().subscribe(res =>{
+          console.log(res);
+          this.user.profilePic = res[0].Details.profilePic;
+          var image = this.element.nativeElement.querySelector('.image');
+          image.src = this.user.profilePic ;
+        })
+      }
     } 
   }
   changeForm(index){
@@ -62,6 +65,13 @@ export class DashboardComponent implements OnInit {
       if(i != index){
         this.form[i] = false;
       }
+    }
+  }
+  adminRightsInfo(){
+    if(this.accounType == 'student' || this.accounType == 'employee'){
+      return false;
+    }else{
+      return true;
     }
   }
   approve(index){
