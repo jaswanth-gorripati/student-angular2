@@ -202,9 +202,6 @@ export class RaiseRequestComponent implements OnInit {
       this.gotExpUpdateRequest = true;
     }
   }
-  addworkDetails(){
-
-  }
   personalUpdate = false;
   editProfile(){
     this.cancel()
@@ -358,11 +355,54 @@ export class RaiseRequestComponent implements OnInit {
       this.addForm.controls.education.reset();
     }  
   }
+  addworkDetails(){
+    let submitForm = {'fcn':"","peers":['peer1','peer2'],"args":[],"channelName":"profession","chaincodeName":"workchain","chaincodeVersion":"v0"};
+    if(this.gotExpAddRequest == true){ 
+     if(this.addWorkDetailsForm){
+        submitForm.fcn="ExperienceRequest";
+        submitForm.args = [];
+        let temp = this.workForm.controls.experience.value;
+        console.log("temp:",temp)
+        for(let i=0;i<temp.length;i++){
+            submitForm.args.push(" ",temp[i].designation,temp[i].yearOfJoining,temp[i].companyName,temp[i].location,temp[i].dor,""+temp[i].stillWorking+"");
+        }
+        this.submitExpAdd(submitForm);
+        this.workForm.controls.experience.reset();
+      } 
+      console.log(this.workForm.value)
+      console.log(submitForm);
+    }else{
+      let i =0;
+      submitForm.fcn="ExperienceRequest";
+      let temp = this.workForm.controls.experience.value;
+      console.log(temp)
+      submitForm.args.push(temp[i].designation,temp[i].yearOfJoining,temp[i].companyName,temp[i].location,temp[i].dor,temp[i].stillWorking);
+      this.submitExpAdd(submitForm)
+      this.workForm.controls.experience.reset();
+    }  
+  }
   Success = false;
   submitAdd(submitForm){
     this.Success = false;
     console.log("from submission",submitForm)
     this.addOrUpdate.addDetails(submitForm).subscribe(resp =>{
+      console.log(resp);
+      this.clearAll();
+      if(resp == ""){
+        setTimeout(()=> {
+          this.Success= true;
+          alert("operation Succesful");
+        }, 1000);
+      }else{
+        alert(resp);
+      }
+      //this.addForm.reset();
+    })
+  }
+  submitExpAdd(submitForm){
+    this.Success = false;
+    console.log("from submission",submitForm)
+    this.addOrUpdate.addWorkDetails(submitForm).subscribe(resp =>{
       console.log(resp);
       this.clearAll();
       if(resp == ""){

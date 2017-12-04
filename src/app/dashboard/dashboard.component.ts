@@ -36,15 +36,28 @@ export class DashboardComponent implements OnInit {
   }
   userContent(){
     if(this.user.name != 'admin'){
-      this.userInfo.getDashboard().subscribe(res=>{
-        console.log("User Requests : ",res)
+      this.userInfo.getDashboardEdu().subscribe(res=>{
+        console.log("User Edu Requests : ",res)
         for(let i=0;i<res.length;i++){
           if(res[i].Details.status == "pending"){
-            this.userRequests.pending.push(res[i].Details);
+            this.userRequests.education.pending.push(res[i].Details);
           }else if(res[i].Details.status == "Approve"){
-            this.userRequests.approved.push(res[i].Details);
+            this.userRequests.education.approved.push(res[i].Details);
           }else if(res[i].Details.status == "rejected"){
-            this.userRequests.rejected.push(res[i].Details);
+            this.userRequests.education.rejected.push(res[i].Details);
+          }
+        }
+        console.log("userREquests : ",this.userRequests )
+      })
+      this.userInfo.getDashboardExp().subscribe(res=>{
+        console.log("User Exp Requests : ",res)
+        for(let i=0;i<res.length;i++){
+          if(res[i].Record.status == "pending"){
+            this.userRequests.experience.pending.push(res[i].Record);
+          }else if(res[i].Record.status == "Approve"){
+            this.userRequests.experience.approved.push(res[i].Record);
+          }else if(res[i].Record.status == "Rejected"){
+            this.userRequests.experience.rejected.push(res[i].Record);
           }
         }
         console.log("userREquests : ",this.userRequests )
@@ -67,6 +80,13 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
+  forEE(){
+    if(this.accounType == "employer" || this.accounType=="employee"){
+      return true;
+    }else{
+      return false;
+    }
+  }
   adminRightsInfo(){
     if(this.accounType == 'student' || this.accounType == 'employee'){
       return false;
@@ -75,8 +95,8 @@ export class DashboardComponent implements OnInit {
     }
   }
   approve(index){
-    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.pending[index].studentId,this.userRequests.pending[index].degree,"Approve",this.userRequests.pending[index].remarks,this.userRequests.pending[index].board,this.userRequests.pending[index].clgname,""+this.userRequests.pending[index].yop+"",""+this.userRequests.pending[index].Percentage+""]}
-    console.log(this.userRequests.pending[index]);
+    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.education.pending[index].studentId,this.userRequests.education.pending[index].degree,"Approve",this.userRequests.education.pending[index].remarks,this.userRequests.education.pending[index].board,this.userRequests.education.pending[index].clgname,""+this.userRequests.education.pending[index].yop+"",""+this.userRequests.education.pending[index].Percentage+""]}
+    console.log(this.userRequests.education.pending[index]);
     this.addUpdateService.addDetailsToMain(formdata);
     setTimeout(function() {
       this.addUpdateService.getAlert().then(res=>{
@@ -86,12 +106,37 @@ export class DashboardComponent implements OnInit {
           alert(res);
         }
       })
-    }, 1000);
+    }, 2000);
   }
   reject(index){
-    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.pending[index].studentId,this.userRequests.pending[index].degree,"rejected","Does not Match Our database"]}
-    console.log(this.userRequests.pending[index]);
+    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.education.pending[index].studentId,this.userRequests.education.pending[index].degree,"rejected","Does not Match Our database"]}
+    console.log(this.userRequests.education.pending[index]);
     this.addUpdateService.addDetails(formdata).subscribe(res=>{
+      if(res == ""){
+        alert("rejected")
+      }else{
+        alert("failed to reject");
+      }
+    })
+  }
+  approveWork(index){
+    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.experience.pending[index].employeeId,this.userRequests.experience.pending[index].companyname,"Approve",this.userRequests.experience.pending[index].remarks,this.userRequests.experience.pending[index].desgination,this.userRequests.experience.pending[index].location,this.userRequests.experience.pending[index].yoj,this.userRequests.experience.pending[index].dor,""+this.userRequests.experience.pending[index].experience+"",""+this.userRequests.experience.pending[index].working+""]}
+    console.log(this.userRequests.experience.pending[index]);
+    this.addUpdateService.addWorkDetailsToMain(formdata);
+    setTimeout(function() {
+      this.addUpdateService.getAlert().then(res=>{
+        if(res == "approved"){
+          this.userContent()  
+        }else{
+          alert(res);
+        }
+      })
+    }, 2000);
+  }
+  rejectWork(index){
+    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.experience.pending[index].employeeId,this.userRequests.experience.pending[index].companyname,"Rejected","Does not Match Our database"]}
+    console.log(this.userRequests.education.pending[index]);
+    this.addUpdateService.addWorkDetails(formdata).subscribe(res=>{
       if(res == ""){
         alert("rejected")
       }else{

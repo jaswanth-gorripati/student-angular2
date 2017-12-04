@@ -27,6 +27,9 @@ export class AddUpdateStudentDetailsService {
   addDetails(formdata){
     return this.http.post(' http://localhost:4000/channels/'+this.requestNetwork.channelName+'/chaincodes/'+this.requestNetwork.chaincodeName+'',formdata,this.headers()).map(res => res.text())
   }
+  addWorkDetails(formdata){
+    return this.http.post(' http://localhost:4000/channels/profession/chaincodes/workchain',formdata,this.headers()).map(res => res.text())
+  }
   alert:any;
   addDetailsToMain(formdata){
     let rChainData = {"fcn":"hypernymprocess","args":[formdata.args[0],formdata.args[1],formdata.args[2],formdata.args[3]]}
@@ -34,7 +37,26 @@ export class AddUpdateStudentDetailsService {
       console.log(res.text())
       if(res.text() === ""){
         let mainData = {"fcn":"addEducation","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7]]}
-        this.http.post(' http://localhost:4000/channels/mainchannel/chaincodes/getinfochain',mainData,this.headers()).subscribe(res =>{
+        this.http.post(' http://localhost:4000/channels/mainchannel/chaincodes/getchaininfo',mainData,this.headers()).subscribe(res =>{
+          console.log("From main add",res.text())
+          if(res.text() == ""){
+            alert("Approved");
+            this.alert = "approved";
+          }else{
+            this.alert = "failed";
+          }
+        })
+      }
+    })
+  }
+  addWorkDetailsToMain(formdata){
+    this.alert = "processing";
+    let rChainData = {"fcn":"hypernymprocess","args":[formdata.args[0],formdata.args[1],formdata.args[2],formdata.args[3]]}
+    this.http.post(' http://localhost:4000/channels/profession/chaincodes/workchain',rChainData,this.headers()).subscribe(res => {
+      console.log(res.text())
+      if(res.text() === ""){
+        let mainData = {"fcn":"addExperience","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7],formdata.args[8],formdata.args[9]]}
+        this.http.post(' http://localhost:4000/channels/mainchannel/chaincodes/getchaininfo',mainData,this.headers()).subscribe(res =>{
           console.log("From main add",res.text())
           if(res.text() == ""){
             alert("Approved");
