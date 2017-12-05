@@ -17,6 +17,8 @@ export class RaiseRequestComponent implements OnInit {
   isValidRequest = false;
   accountType:any;
   idFound = false;
+  expOptions:any =[];
+  companyToEdit:any;
   acadamicNetwork:any = {"peers":['peer1','peer2'],"channelName":'acadamics',"chaincodeName":"mycc"}
   constructor(public fb: FormBuilder,private userInfo: UserInfoService,private addOrUpdate: AddUpdateStudentDetailsService) {
     this.token = this.userInfo.getUserToken();
@@ -46,6 +48,12 @@ export class RaiseRequestComponent implements OnInit {
             this.eduOptions.push(this.userDetailsInNetwork.education[i].degree);
           }
           console.log("eduoptions:",this.eduOptions);
+        }
+        if(this.userDetailsInNetwork.experience != undefined){
+          for(let i=0;i<this.userDetailsInNetwork.experience.length;i++){
+            this.expOptions.push(this.userDetailsInNetwork.experience[i].organisation);
+          }
+          console.log("eduoptions:",this.expOptions);
         }
       })
     }
@@ -208,6 +216,38 @@ export class RaiseRequestComponent implements OnInit {
     this.personalUpdate = true;
   }
   eduToEdit:any;
+
+  getWorkForm(){
+    let isOk=false;
+    this.removeWork(0);
+    for(let i=0;i<this.userDetailsInNetwork.experience.length;i++){
+     if(this.companyToEdit == this.userDetailsInNetwork.experience[i].organisation){
+       console.log(this.userDetailsInNetwork.experience[i]);
+       let doj = new Date(this.userDetailsInNetwork.experience[i].dateOfJoining);
+       let doj1 =doj.getFullYear()+'-'+doj.getDate()+'-'+ doj.getMonth();
+       let dorstr = this.userDetailsInNetwork.experience[i].dateOfRelieving;
+       let dor = new Date(dorstr);
+       console.log(doj1,doj);
+       console.log(dor);
+       let form =this.fb.group({
+        companyName:[this.userDetailsInNetwork.experience[i].organisation,Validators.required],
+        designation:[this.userDetailsInNetwork.experience[i].designation,Validators.required],
+        yearOfJoining:[{date:{ year:doj.getFullYear(), month: doj.getMonth(), day: doj.getDate()}},Validators.required],
+        dor:[doj1,Validators.required],
+        location:[this.userDetailsInNetwork.experience[i].Location,Validators.required],
+        stillWorking:[this.userDetailsInNetwork.experience[i].StillWork,Validators.required]
+       });
+       console.log(form);
+       let control=<FormArray>this.workForm.controls['experience'];
+       control.push(form);
+       isOk=true;
+       this.isValidRequest=true;
+       this.addWorkDetailsForm=true;
+       
+      } 
+    }
+  }
+  
   getEduForm(){
     let  isOk = false;
     this.removeEdu(0);
@@ -263,7 +303,9 @@ export class RaiseRequestComponent implements OnInit {
      });
   }
   updateExpRequest(){
+    alert('hi');
 
+    
   }
   public addForm = this.fb.group({
     name:["",Validators.required],
@@ -364,19 +406,19 @@ export class RaiseRequestComponent implements OnInit {
         let temp = this.workForm.controls.experience.value;
         console.log("temp:",temp)
         for(let i=0;i<temp.length;i++){
-            submitForm.args.push(" ",temp[i].designation,temp[i].yearOfJoining,temp[i].companyName,temp[i].location,temp[i].dor,""+temp[i].stillWorking+"");
+            submitForm.args.push("Add",temp[i].designation,temp[i].yearOfJoining,temp[i].companyName,temp[i].location,temp[i].dor,""+temp[i].stillWorking+"");
         }
         this.submitExpAdd(submitForm);
         this.workForm.controls.experience.reset();
       } 
       console.log(this.workForm.value)
       console.log(submitForm);
-    }else{
+    }else if(this.gotExpUpdateRequest == true){
       let i =0;
       submitForm.fcn="ExperienceRequest";
       let temp = this.workForm.controls.experience.value;
       console.log(temp)
-      submitForm.args.push(temp[i].designation,temp[i].yearOfJoining,temp[i].companyName,temp[i].location,temp[i].dor,temp[i].stillWorking);
+      submitForm.args.push("Update",temp[i].designation,temp[i].yearOfJoining,temp[i].companyName,temp[i].location,temp[i].dor,""+temp[i].stillWorking+"");
       this.submitExpAdd(submitForm)
       this.workForm.controls.experience.reset();
     }  

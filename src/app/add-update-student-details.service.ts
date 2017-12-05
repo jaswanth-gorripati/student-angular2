@@ -36,16 +36,25 @@ export class AddUpdateStudentDetailsService {
     this.http.post(' http://localhost:4000/channels/'+this.requestNetwork.channelName+'/chaincodes/'+this.requestNetwork.chaincodeName+'',rChainData,this.headers()).subscribe(res => {
       console.log(res.text())
       if(res.text() === ""){
-        let mainData = {"fcn":"addEducation","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7]]}
-        this.http.post(' http://localhost:4000/channels/mainchannel/chaincodes/getchaininfo',mainData,this.headers()).subscribe(res =>{
-          console.log("From main add",res.text())
-          if(res.text() == ""){
-            alert("Approved");
-            this.alert = "approved";
-          }else{
-            this.alert = "failed";
-          }
-        })
+        let mainData:any =[];
+        if(formdata.args[8] == 'Add'){
+          mainData = {"fcn":"addEducation","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7]]}
+          this.requestToMain(mainData);
+        }else if(formdata.args[8] == 'Update'){
+          mainData = {"fcn":"updateEducation","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7]]}
+          this.requestToMain(mainData);
+        }
+      }
+    })
+  }
+  requestToMain(mainData){
+    this.http.post(' http://localhost:4000/channels/mainchannel/chaincodes/getchaininfo',mainData,this.headers()).subscribe(res =>{
+      console.log("From main add",res.text())
+      if(res.text() == ""){
+        alert("Approved");
+        this.alert = "approved";
+      }else{
+        this.alert = "failed";
       }
     })
   }
@@ -55,16 +64,26 @@ export class AddUpdateStudentDetailsService {
     this.http.post(' http://localhost:4000/channels/profession/chaincodes/workchain',rChainData,this.headers()).subscribe(res => {
       console.log(res.text())
       if(res.text() === ""){
-        let mainData = {"fcn":"addExperience","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7],formdata.args[8],formdata.args[9]]}
-        this.http.post(' http://localhost:4000/channels/mainchannel/chaincodes/getchaininfo',mainData,this.headers()).subscribe(res =>{
-          console.log("From main add",res.text())
-          if(res.text() == ""){
-            alert("Approved");
-            this.alert = "approved";
-          }else{
-            this.alert = "failed";
-          }
-        })
+        let mainData:any =[];
+        if(formdata.args[10] == 'Add'){
+          mainData = {"fcn":"addExperience","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7],formdata.args[8],formdata.args[9]]}
+          this.workToMain(mainData);
+        }else if(formdata.args[10] == 'Update'){
+          mainData = {"fcn":"updateExperience","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7],formdata.args[8],formdata.args[9]]}
+          this.workToMain(mainData);
+        }
+        
+      }
+    })
+  }
+  workToMain(mainData){
+    this.http.post(' http://localhost:4000/channels/mainchannel/chaincodes/getchaininfo',mainData,this.headers()).subscribe(res =>{
+      console.log("From main add",res.text())
+      if(res.text() == ""){
+        alert("Approved");
+        this.alert = "approved";
+      }else{
+        this.alert = "failed";
       }
     })
   }

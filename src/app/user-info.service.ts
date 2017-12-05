@@ -59,7 +59,7 @@ export class UserInfoService {
   }
   getDashboardExp(){
     //let requestNetwork = {"channelName":"","chaincodeName":"rchain","version":"v0"}
-    let formdata = {"fcn":"getdetailsbyattributes","args":['xyz']}
+    let formdata = {"fcn":"getdetailsbyattributes","args":[]}
     return this.http.post(' http://localhost:4000/channels/profession/chaincodes/workchain',formdata,this.headers()).map(res => res.json());
   }
   registerToNetwork(formdata){

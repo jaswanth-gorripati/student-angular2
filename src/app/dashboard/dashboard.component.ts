@@ -16,16 +16,7 @@ export class DashboardComponent implements OnInit {
   userRequests:any =[];
   profilePic:any;
   ngOnInit() {
-    this.details = {'name':'VIGNAN','dob':'JNTU','age':'Hyderabad','father':'Admin',
-                    'education':[
-                      {'degree':'12uq1a0434','board':'Add Request','score':98,'clgName':'little','clgCode':'2013'},
-                      {'degree':'13uq1a0987','board':'Add Request','score':93,'clgName':'chaitanya','clgCode':'2015'},
-                      {'degree':'13uy45y654','board':'Update Request','score':87,'clgName':'vignan','clgCode':'2016'},
-                      {'degree':'12uq1a0yu4','board':'Add Request','score':98,'clgName':'little','clgCode':'2013'},
-                      {'degree':'15uqhgft87','board':'Update Request','score':93,'clgName':'chaitanya','clgCode':'2014'},
-                      {'degree':'1yuy45y654','board':'Update Request','score':87,'clgName':'vignan','clgCode':'2000'}
-                  ]}
-    this.userRequests = {"pending":[],"approved":[],"rejected":[]}
+    this.userRequests = {"education":{"pending":[],"approved":[],"rejected":[]},"experience":{"pending":[],"approved":[],"rejected":[]}}
     let token = this.userInfo.getUserToken();
     this.addUpdateService.setToken(token);
     this.accounType = this.userInfo.AccountType();
@@ -35,41 +26,47 @@ export class DashboardComponent implements OnInit {
     this.userContent();
   }
   userContent(){
-    if(this.user.name != 'admin'){
+    if(this.accounType == 'student' || this.accounType == 'employee' || this.accounType == 'universityStaff'){
       this.userInfo.getDashboardEdu().subscribe(res=>{
         console.log("User Edu Requests : ",res)
-        for(let i=0;i<res.length;i++){
-          if(res[i].Details.status == "pending"){
-            this.userRequests.education.pending.push(res[i].Details);
-          }else if(res[i].Details.status == "Approve"){
-            this.userRequests.education.approved.push(res[i].Details);
-          }else if(res[i].Details.status == "rejected"){
-            this.userRequests.education.rejected.push(res[i].Details);
+        console.log(res.length)
+          for(let i=0;i<res.length;i++){
+            if(res[i].Details.status == "pending"){
+              this.userRequests.education.pending.push(res[i].Details);
+            }else if(res[i].Details.status == "Approve"){
+              this.userRequests.education.approved.push(res[i].Details);
+            }else if(res[i].Details.status == "rejected"){
+              this.userRequests.education.rejected.push(res[i].Details);
+            }
+            console.log("userREquests : ",this.userRequests )
           }
-        }
-        console.log("userREquests : ",this.userRequests )
+          console.log("userREquests : ",this.userRequests )
       })
+    }
+    if(this.accounType == 'employee' || this.accounType =='employer'){
       this.userInfo.getDashboardExp().subscribe(res=>{
         console.log("User Exp Requests : ",res)
-        for(let i=0;i<res.length;i++){
-          if(res[i].Record.status == "pending"){
-            this.userRequests.experience.pending.push(res[i].Record);
-          }else if(res[i].Record.status == "Approve"){
-            this.userRequests.experience.approved.push(res[i].Record);
-          }else if(res[i].Record.status == "Rejected"){
-            this.userRequests.experience.rejected.push(res[i].Record);
+        if(res != []){
+          for(let i=0;i<res.length;i++){
+            if(res[i].Record.status == "pending"){
+              this.userRequests.experience.pending.push(res[i].Record);
+            }else if(res[i].Record.status == "Approve"){
+              this.userRequests.experience.approved.push(res[i].Record);
+            }else if(res[i].Record.status == "Rejected"){
+              this.userRequests.experience.rejected.push(res[i].Record);
+            }
           }
+          console.log("userREquests : ",this.userRequests )
         }
-        console.log("userREquests : ",this.userRequests )
       })
-      if(this.accounType != "employer"){
-        this.userInfo.getUserDetailsFromNetwork().subscribe(res =>{
-          console.log(res);
-          this.user.profilePic = res[0].Details.profilePic;
-          var image = this.element.nativeElement.querySelector('.image');
-          image.src = this.user.profilePic ;
-        })
-      }
+    }
+    if(this.accounType == "student" || this.accounType == 'employee'){
+      this.userInfo.getUserDetailsFromNetwork().subscribe(res =>{
+        console.log(res);
+        this.user.profilePic = res[0].Details.profilePic;
+        var image = this.element.nativeElement.querySelector('.image');
+        image.src = this.user.profilePic ;
+      })
     } 
   }
   changeForm(index){
@@ -87,6 +84,13 @@ export class DashboardComponent implements OnInit {
       return false;
     }
   }
+  forSE(){
+    if(this.accounType == "student" || this.accounType=="employee"){
+      return false;
+    }else{
+      return true;
+    }
+  }
   adminRightsInfo(){
     if(this.accounType == 'student' || this.accounType == 'employee'){
       return false;
@@ -95,7 +99,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   approve(index){
-    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.education.pending[index].studentId,this.userRequests.education.pending[index].degree,"Approve",this.userRequests.education.pending[index].remarks,this.userRequests.education.pending[index].board,this.userRequests.education.pending[index].clgname,""+this.userRequests.education.pending[index].yop+"",""+this.userRequests.education.pending[index].Percentage+""]}
+    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.education.pending[index].studentId,this.userRequests.education.pending[index].degree,"Approve",this.userRequests.education.pending[index].remarks,this.userRequests.education.pending[index].board,this.userRequests.education.pending[index].clgname,""+this.userRequests.education.pending[index].yop+"",""+this.userRequests.education.pending[index].Percentage+"",this.userRequests.education.pending[index].RequestType]}
     console.log(this.userRequests.education.pending[index]);
     this.addUpdateService.addDetailsToMain(formdata);
     setTimeout(function() {
@@ -120,8 +124,8 @@ export class DashboardComponent implements OnInit {
     })
   }
   approveWork(index){
-    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.experience.pending[index].employeeId,this.userRequests.experience.pending[index].companyname,"Approve",this.userRequests.experience.pending[index].remarks,this.userRequests.experience.pending[index].desgination,this.userRequests.experience.pending[index].location,this.userRequests.experience.pending[index].yoj,this.userRequests.experience.pending[index].dor,""+this.userRequests.experience.pending[index].experience+"",""+this.userRequests.experience.pending[index].working+""]}
-    console.log(this.userRequests.experience.pending[index]);
+    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.experience.pending[index].employeeId,this.userRequests.experience.pending[index].companyname,"Approve",this.userRequests.experience.pending[index].remarks,this.userRequests.experience.pending[index].designation,this.userRequests.experience.pending[index].location,""+this.userRequests.experience.pending[index].yoj+"",this.userRequests.experience.pending[index].dor,""+this.userRequests.experience.pending[index].experience+"",""+this.userRequests.experience.pending[index].working+"",this.userRequests.experience.pending[index].RequestType]}
+    console.log(formdata);
     this.addUpdateService.addWorkDetailsToMain(formdata);
     setTimeout(function() {
       this.addUpdateService.getAlert().then(res=>{

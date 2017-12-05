@@ -38,16 +38,17 @@
   <div class="container col-sm-7 vf" *ngIf="accountType == 'employee'">
       <table class="table table-hover tp">
         <thead class="ns" *ngIf="userDetailsInNetwork?.experience != null">
-            <tr class="heading"> <th> Designation </th><th>Oganisation</th><th>Location</th><th>Joining Year</th><th>Releaved data</th><th> Actions </th></tr>
+            <tr class="heading"> <th> Designation </th><th>Oganisation</th><th>Location</th><th>Joining Year</th><th>Releaved data</th><th> Experience </th><th> Actions </th></tr>
         </thead>
         <tbody class="as" *ngIf="userDetailsInNetwork?.experience != null">
-          <tr  class="info">
-              <td><span>sdkfjh</span></td>
-              <td><span>dfkjdk</span></td>
-              <td>dfl.kjdh</td>
-              <td><span>65</span></td>
-              <td style="table-layout:auto !important; "><span>2012</span></td>
-              <td><button class="btn btn-outline-danger" (click)="reject(i)"> Reject </button></td>
+          <tr  class="info" *ngFor = "let exp of userDetailsInNetwork?.experience">
+              <td><span>{{exp.designation}}</span></td>
+              <td><span>{{exp.organisation}}</span></td>
+              <td>{{exp.Location}}</td>
+              <td><span>{{exp.dateOfJoining | date}}</span></td>
+              <td><span>{{exp.dateOfRelieving | date}}</span></td>
+              <td style="table-layout:auto !important; "><span>{{exp.Experience}} Year/s</span></td>
+              <td><button class="btn btn-outline-danger" > Update </button></td>
           </tr>
         </tbody>
         <tbody *ngIf="userDetailsInNetwork?.experience == null">

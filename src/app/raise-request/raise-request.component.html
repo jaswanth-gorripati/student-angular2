@@ -91,7 +91,7 @@
           <div *ngIf="gotExpUpdateRequest && !isValidRequest" class="row">
             <select class="form-control col-sm-5 lr" id="sel1" [(ngModel)]="companyToEdit">
               <option hidden="true">- Select Company - </option>
-              <option *ngFor="let work of workOptions">{{work}}</option>
+              <option *ngFor="let work of expOptions">{{work}}</option>
             </select>
            
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
