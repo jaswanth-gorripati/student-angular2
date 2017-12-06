@@ -4,7 +4,7 @@ import { UserInfoService } from './user-info.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  templateUrl: './app.component.html',                      
   providers:[UserInfoService],
   styleUrls: ['./app.component.css']
 })
@@ -20,16 +20,19 @@ export class AppComponent {
   AccountType:any;
   receiveMessage($event) {
     this.loggedIn = $event;
-    this.isAdmin = this.userInfo.isAdmin();
+    //this.isAdmin = this.userInfo.isAdmin();
     this.AccountType = this.userInfo.AccountType();
     this.user = this.userInfo.getUserName();
     if(this.user=="admin"){
+      this.isAdmin = true;
       this.router.navigate(["/admindash"]);
-    }else
+    }else{
+      this.isAdmin = false;
       this.router.navigate(["/dashboard"]);
+    }
   }
   navDiff(){
-    if(this.AccountType == "student" || this.AccountType =="employee"){
+    if((this.AccountType == "student" || this.AccountType =="employee") && (!this.isAdmin)){
       return true;
     }else{
       return false;

@@ -223,17 +223,15 @@ export class RaiseRequestComponent implements OnInit {
     for(let i=0;i<this.userDetailsInNetwork.experience.length;i++){
      if(this.companyToEdit == this.userDetailsInNetwork.experience[i].organisation){
        console.log(this.userDetailsInNetwork.experience[i]);
-       let doj = new Date(this.userDetailsInNetwork.experience[i].dateOfJoining);
-       let doj1 =doj.getFullYear()+'-'+doj.getDate()+'-'+ doj.getMonth();
+       let dojstr = this.userDetailsInNetwork.experience[i].dateOfJoining;
+       let doj =dojstr.split('T');
        let dorstr = this.userDetailsInNetwork.experience[i].dateOfRelieving;
-       let dor = new Date(dorstr);
-       console.log(doj1,doj);
-       console.log(dor);
+       let dor = dorstr.split('T');
        let form =this.fb.group({
         companyName:[this.userDetailsInNetwork.experience[i].organisation,Validators.required],
         designation:[this.userDetailsInNetwork.experience[i].designation,Validators.required],
-        yearOfJoining:[{date:{ year:doj.getFullYear(), month: doj.getMonth(), day: doj.getDate()}},Validators.required],
-        dor:[doj1,Validators.required],
+        yearOfJoining:[doj[0],Validators.required],
+        dor:[dor[0],Validators.required],
         location:[this.userDetailsInNetwork.experience[i].Location,Validators.required],
         stillWorking:[this.userDetailsInNetwork.experience[i].StillWork,Validators.required]
        });

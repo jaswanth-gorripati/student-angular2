@@ -39,9 +39,11 @@ export class AddUpdateStudentDetailsService {
         let mainData:any =[];
         if(formdata.args[8] == 'Add'){
           mainData = {"fcn":"addEducation","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7]]}
+          console.log(mainData);
           this.requestToMain(mainData);
         }else if(formdata.args[8] == 'Update'){
           mainData = {"fcn":"updateEducation","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7]]}
+          console.log(mainData);
           this.requestToMain(mainData);
         }
       }
@@ -67,9 +69,19 @@ export class AddUpdateStudentDetailsService {
         let mainData:any =[];
         if(formdata.args[10] == 'Add'){
           mainData = {"fcn":"addExperience","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7],formdata.args[8],formdata.args[9]]}
+          let dor = mainData.args[5].split("T");
+          mainData.args[5] = dor[0];
+          let yoj = mainData.args[4].split("T");
+          mainData.args[4] =yoj[0];
+          console.log(mainData);
           this.workToMain(mainData);
         }else if(formdata.args[10] == 'Update'){
           mainData = {"fcn":"updateExperience","args":[formdata.args[0],formdata.args[1],formdata.args[4],formdata.args[5],formdata.args[6],formdata.args[7],formdata.args[8],formdata.args[9]]}
+          let dor = mainData.args[5].split("T");
+          mainData.args[5] = dor[0];
+          let yoj = mainData.args[4].split("T");
+          mainData.args[4] =yoj[0];
+          console.log(mainData);
           this.workToMain(mainData);
         }
         

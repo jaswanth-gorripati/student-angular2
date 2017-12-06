@@ -1,9 +1,15 @@
 .heading{
     font-weight: bold;
     overflow: hidden;
+    background-color: #afacac;
 }
 .heading:hover{
-    background-color:#fff;
+    background-color:#afacac;
+}
+.ts{
+    max-height: 200px;
+    border-radius:5px;
+    box-shadow: 1px 1px 1px 1px;
 }
 .info{
     font-family: cursive;
@@ -13,11 +19,15 @@
 }
 .vf{
     max-height: 200px;
-    margin-top: -200px;
-    margin-left: 36%;
+    margin-top: -210px;
+    margin-left: 480px;
 }
-.table td, .table th{
+.table td{
     padding:.5rem;
+    word-wrap: break-word;
+}
+.table th{
+    padding: .5rem
 }
 tbody {
     display:block;
@@ -29,8 +39,20 @@ thead, tbody tr {
     width:100%;
     table-layout:fixed;
 }
-thead {
-    width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+table thead th{
+    vertical-align: top;
+}
+.card-body{
+    background-color: #e9ecef;
+}
+.card{
+    overflow: hidden;
+    width: 270px;
+    margin-left: 20%;
+    box-shadow: 1px 1px 1px 1px;
+}
+.fa{
+    font-size: 10px;
 }
 .loadingBG{
 	opacity: 0.3;
@@ -78,4 +100,17 @@ thead {
     background-color: rgba(0,0,0,0.95); /* Black background with opacity */
     z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer;
+}
+h1{position:absolute;top:50%;left:50%;height:40px;line-height:40px;width:160px;margin:-20px 0 0 -80px;text-align:center;font-weight:normal;}
+.loader{-webkit-animation:load 4s infinite ease-in-out;position:absolute;top:51%;height:10px;width:30px;text-align:right;font-size:200%;margin-left:-15px;}
+.loader:nth-child(2){-webkit-animation-delay:.2s;width:20px;}
+.loader:nth-child(3){-webkit-animation-delay:.4s;width:10px;}
+@-webkit-keyframes load{
+    0%{left:-2%;}
+    40%{left:50%;}
+    60%{left:50%;}
+    100%{left:102%;}
+}
+.loader{
+    color:white;
 }

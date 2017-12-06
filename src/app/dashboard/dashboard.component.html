@@ -1,4 +1,5 @@
-<div class="container">
+<div>
+<div class="container" [ngClass]="isLoading === false?'':'loadingBG'">
   <div class="row">
       <div>
           <img *ngIf="accounType != 'employer'"  class="image" style="height:200px;width:200px;border-radius:50%">
@@ -30,7 +31,7 @@
         </div>
         <br *ngIf="accounType == 'student'"><br *ngIf="accounType == 'student'">
         <div class="row">
-          <div class="col-sm-3"><button class="btn btn-outline-info">View My Information On the Network</button></div>
+          <div class="col-sm-3"><button class="btn btn-outline-info" (click)="navToDetails()">View My Information On the Network</button></div>
         </div>
       </div>
       
@@ -84,7 +85,7 @@
   </div><br><br>
   <div *ngIf="accounType != 'employer'" [ngClass]="{'col-sm-6':(accountType == 'employee')}">
     <div class="container col-sm-12 tp" *ngIf="form[0]">
-      <table class="table table-hover tp">
+      <table class="table table-hover tp" *ngIf="userRequests?.education?.pending.length > 0">
         <tr class="heading"> <td *ngIf="forSE()">Student ID</td><td>Request Type</td><td> Degree </td><td>Institution</td><td>Location</td><td>Score</td><td>Passed Out Year</td><td>Requested Time</td><td *ngIf="accounType == 'universityStaff'"> Actions </td></tr>
         <tr *ngFor="let edu of userRequests?.education?.pending;let i=index" class="info">
           
@@ -101,7 +102,7 @@
       </table>
     </div>
     <div class="container col-sm-12 tp" *ngIf="form[1]">
-      <table class="table table-hover tp">
+      <table class="table table-hover tp" *ngIf="userRequests?.education?.approved.length > 0">
         <thead>
             <tr class="heading"> <td *ngIf="forSE()">Student ID</td><td>Request Type</td><td> Degree </td><td>Institution</td><td>Location</td><td>Score</td><td>Passed Out Year</td><td>Requested Time</td><td> Status </td></tr>
         </thead>
@@ -122,9 +123,9 @@
       </table>
     </div>
     <div class="container col-sm-12 tp" *ngIf="form[2]">
-      <table class="table table-hover">
+      <table class="table table-hover" *ngIf="userRequests?.education?.rejected.length!=0" >
           <tr class="heading"> <td *ngIf="forSE()">Student ID</td><td>Request Type</td><td> Degree </td><td>Institution</td><td>Location</td><td>Score</td><td>Passed Out Year</td><td>Requested Time</td><td> Status </td></tr>
-          <tr *ngFor="let edu of userRequests.education.rejected;let i=index" class="info">
+          <tr *ngFor="let edu of userRequests?.education?.rejected;let i=index" class="info">
               
                 <td *ngIf="forSE()"><span> {{edu.studentId}} </span></td>
                 <td><span>{{edu.RequestType}}</span></td>
@@ -141,7 +142,7 @@
   </div>
   <div *ngIf="forEE()" [ngClass]="{'col-sm-6':(accountType == 'employee')}">
     <div class="container col-sm-12 tp" *ngIf="form[0]">
-      <table class="table table-hover tp">
+      <table class="table table-hover tp adu" *ngIf="userRequests?.experience?.pending.length > 0">
         <tr style="font-size:.8rem" class="heading"> <td *ngIf="accounType != 'employee'">Employee ID</td><td>Request Type</td><td> Designation </td><td>Company Name</td><td>Location</td><td>Year Of joining</td><td> Date of relieving</td><td>Experience</td><td>Requested Time</td><td *ngIf="accounType == 'employer'" > Actions </td></tr>
         <tr style="font-size:.9rem" *ngFor="let edu of userRequests.experience.pending;let i=index" class="info">
           
@@ -152,7 +153,7 @@
             <td>{{edu.location}}</td>
             <td><span>{{edu.yoj | date}}</span></td>
             <td><span>{{edu.dor | date}}</span></td>
-            <td><span>{{edu.experience}}</span></td>
+            <td><span>{{edu.experience}} (in Year)</span></td>
             <td><span>{{edu.timeenrolled | date}}</span></td>
             <td *ngIf="accounType == 'employer'" colspan="2"><button class="btn btn-outline-info btn-sm" (click)="approveWork(i)"> Approve </button>&nbsp;&nbsp;&nbsp;
               <button class="btn btn-outline-danger btn-sm" (click)="rejectWork(i)"> Reject </button></td>
@@ -160,7 +161,7 @@
       </table>
     </div>
     <div class="container col-sm-12 tp" *ngIf="form[1]">
-      <table class="table table-sm tp">
+      <table class="table table-sm tp exp" *ngIf="userRequests?.experience?.approved.length > 0">
         <thead>
           <tr style="font-size:.8rem" class="heading"> <td *ngIf="accounType != 'employee'">Employee ID</td><td>Request Type</td><td> Designation </td><td>Company Name</td><td>Location</td><td>Year Of joining</td><td> Date of relieving</td><td>Experience</td><td>Requested Time</td><td> Actions </td></tr>
         </thead>
@@ -168,13 +169,13 @@
           <tr style="font-size: .9rem" *ngFor="let edu of userRequests.experience.approved;let i=index" class="info">
               
                 <td *ngIf="accounType != 'employee'"><span> {{edu.employeeId}} </span></td>
-                <td><span></span></td>
+                <td><span>{{edu.RequestType}} </span></td>
                 <td><span>{{edu.designation}}</span></td>
                 <td><span>{{edu.companyname}}</span></td>
                 <td>{{edu.location}}</td>
-                <td><span>{{edu.yor | date}}</span></td>
+                <td><span>{{edu.yoj | date}}</span></td>
                 <td><span>{{edu.dor | date}}</span></td>
-                <td><span>{{edu.experience}}</span></td>
+                <td><span>{{edu.experience}} (in Year)</span></td>
                 <td><span>{{edu.timeenrolled | date}}</span></td>
                 <td><h5 class="btn btn-info" disabled> Approved </h5></td>
             </tr>
@@ -182,22 +183,39 @@
       </table>
     </div>
     <div class="container col-sm-12 tp" *ngIf="form[2]">
-      <table class="table table-hover">
+      <table class="table table-hover" *ngIf="userRequests?.experience?.rejected.length > 0">
         <tr style="font-size:.8rem" class="heading"> <td *ngIf="accounType != 'employee'">Employee ID</td><td>Request Type</td><td> Designation </td><td>Company Name</td><td>Location</td><td>Year Of joining</td><td> Date of relieving</td><td>Experience</td><td>Requested Time</td><td> status </td></tr>
           <tr style="font-size:.9rem" *ngFor="let edu of userRequests.experience.rejected;let i=index" class="info">
               
                 <td *ngIf="accounType != 'employee'"><span> {{edu.employeeId}} </span></td>
-                <td><span></span></td>
+                <td><span>{{edu.RequestType}}</span></td>
                 <td><span>{{edu.designation}}</span></td>
                 <td><span>{{edu.companyname}}</span></td>
                 <td>{{edu.location}}</td>
-                <td><span>{{edu.yor | date}}</span></td>
+                <td><span>{{edu.yoj | date}}</span></td>
                 <td><span>{{edu.dor | date}}</span></td>
-                <td><span>{{edu.experience}}</span></td>
+                <td><span>{{edu.experience}} (in Year)</span></td>
                 <td><span>{{edu.timeenrolled | date}}</span></td>
             <td><h5 class="btn btn-danger" disabled> Rejected </h5></td>
         </tr>
       </table>
     </div>
   </div>
+</div>
+<div [ngClass]="isLoading === false?'':'overlay'" *ngIf="isLoading==true">
+  <!--<div [ngClass]="isLoading === false?'':'loadingFG'">
+ </div>
+ <div *ngIf="isLoading=== true" style="z-index: 4;margin: 25% 45%;color: #f4f3f3;">
+   Loading...
+ </div>-->
+ <div id="load">
+  <div><h3><b>G</b></h3></div>
+  <div><h3><b>N</b></h3></div>
+  <div><h3><b>I</b></h3></div>
+  <div><h3><b>D</b></h3></div>
+  <div><h3><b>A</b></h3></div>
+  <div><h3><b>O</b></h3></div>
+  <div><h3><b>L</b></h3></div>
+</div>
+</div>
 </div>

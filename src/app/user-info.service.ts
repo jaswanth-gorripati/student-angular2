@@ -80,5 +80,9 @@ export class UserInfoService {
     let formdata = {"fcn":"getPersonalInfo","args":[]}
     return this.http.post('http://localhost:4000/channels/mainchannel/chaincodes/getchaininfo',formdata,this.headers()).map(res => res.json());
   }
+  queryDetailsFromNetwork(id:string){
+    let formdata = {"fcn":"getInfoById","args":[id]}
+    return this.http.post('http://localhost:4000/channels/mainchannel/chaincodes/getchaininfo',formdata,this.headers()).map(res => res.json());
+  }
   
 }

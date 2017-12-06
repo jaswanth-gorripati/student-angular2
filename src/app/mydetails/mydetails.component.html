@@ -1,8 +1,8 @@
 <div>
 <div class="row" [ngClass]="isLoading === false?'':'loadingBG'">
   <div class="container row col-sm-4">
-    <div class="card" style="width:250px;margin-left:20%;">
-      <img class="card-img-top image" alt="User image" style="width:250px;height:250px">
+    <div class="card" style="width:270px;margin-left:20%;">
+      <img class="card-img-top image" alt="User image" style="width:270px;height:250px">
       <div class="card-body">
         <h4 class="card-title">{{userDetailsInNetwork?.username}}</h4>
         <h6 class="card-title">{{userDetailsInNetwork?.DateOfBirth | date}}</h6>
@@ -13,7 +13,7 @@
     </div>
   </div>
   <div class="container col-sm-7 tp">
-    <table class="table table-hover tp">
+    <table class="table table-hover ts">
         <thead class="ns" *ngIf="userDetailsInNetwork?.education != null">
             <tr class="heading"> <th> Degree </th><th>Institution</th><th>Location</th><th>Score</th><th>Passed Out Year</th><th> Actions </th></tr>
         </thead>
@@ -24,7 +24,7 @@
               <td>Hyderabad</td>
               <td><span>{{edu.score}}</span></td>
               <td><span>{{edu.yearOfPassout}}</span></td>
-              <td><button class="btn btn-outline-info"> Update </button></td>
+              <td><button class="btn btn-outline-info btn-sm"> Update </button></td>
           </tr>
         </tbody>
         <tbody *ngIf="userDetailsInNetwork?.education == null">
@@ -36,7 +36,7 @@
     </table>
   </div>
   <div class="container col-sm-7 vf" *ngIf="accountType == 'employee'">
-      <table class="table table-hover tp">
+      <table class="table table-hover ts">
         <thead class="ns" *ngIf="userDetailsInNetwork?.experience != null">
             <tr class="heading"> <th> Designation </th><th>Oganisation</th><th>Location</th><th>Joining Year</th><th>Releaved data</th><th> Experience </th><th> Actions </th></tr>
         </thead>
@@ -48,7 +48,7 @@
               <td><span>{{exp.dateOfJoining | date}}</span></td>
               <td><span>{{exp.dateOfRelieving | date}}</span></td>
               <td style="table-layout:auto !important; "><span>{{exp.Experience}} Year/s</span></td>
-              <td><button class="btn btn-outline-danger" > Update </button></td>
+              <td><button class="btn btn-outline-info btn-sm" > Update </button></td>
           </tr>
         </tbody>
         <tbody *ngIf="userDetailsInNetwork?.experience == null">
@@ -60,12 +60,14 @@
       </table>
     </div>
 </div>
-<div [ngClass]="isLoading === false?'':'overlay'">
-  	<div [ngClass]="isLoading === false?'':'loadingFG'">
+<div [ngClass]="isLoading === false?'':'overlay'" *ngIf="isLoading==true">
+  	<!--<div [ngClass]="isLoading === false?'':'loadingFG'">
  	</div>
  	<div *ngIf="isLoading=== true" style="z-index: 3;margin:25% -5%;">
  		Loading...
- 	</div>
-<div>
+   </div>-->
+   <h1 style="color:white">Loading</h1>
+   <span class="loader"><i class="fa fa-circle" aria-hidden="true"></i></span><span class="loader"><i class="fa fa-circle" aria-hidden="true"></i></span><span class="loader"><i class="fa fa-circle" aria-hidden="true"></i></span>
+</div>
 </div>
 

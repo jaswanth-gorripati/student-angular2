@@ -1,5 +1,6 @@
 import { Component, OnInit ,ElementRef} from '@angular/core';
 import { UserInfoService } from "../user-info.service";
+import { Router } from "@angular/router";
 import { AddUpdateStudentDetailsService } from "../add-update-student-details.service";
 
 @Component({
@@ -9,12 +10,13 @@ import { AddUpdateStudentDetailsService } from "../add-update-student-details.se
 })
 export class DashboardComponent implements OnInit {
   details:any;
-  constructor(private userInfo: UserInfoService,private element: ElementRef,private addUpdateService: AddUpdateStudentDetailsService) { }
+  constructor(private router: Router,private userInfo: UserInfoService,private element: ElementRef,private addUpdateService: AddUpdateStudentDetailsService) { }
   public form = [true,false,false];
   user:any = [];
   accounType:any;
   userRequests:any =[];
   profilePic:any;
+  isLoading = true;
   ngOnInit() {
     this.userRequests = {"education":{"pending":[],"approved":[],"rejected":[]},"experience":{"pending":[],"approved":[],"rejected":[]}}
     let token = this.userInfo.getUserToken();
@@ -22,7 +24,6 @@ export class DashboardComponent implements OnInit {
     this.accounType = this.userInfo.AccountType();
     this.user = this.userInfo.getAttrs();
     this.user.name = this.userInfo.getUserName();
-    if(this.accounType )
     this.userContent();
   }
   userContent(){
@@ -41,6 +42,7 @@ export class DashboardComponent implements OnInit {
             console.log("userREquests : ",this.userRequests )
           }
           console.log("userREquests : ",this.userRequests )
+          this.isLoading = false;
       })
     }
     if(this.accounType == 'employee' || this.accounType =='employer'){
@@ -56,7 +58,8 @@ export class DashboardComponent implements OnInit {
               this.userRequests.experience.rejected.push(res[i].Record);
             }
           }
-          console.log("userREquests : ",this.userRequests )
+          console.log("userREquests : ",this.userRequests)
+          this.isLoading = false;
         }
       })
     }
@@ -68,6 +71,9 @@ export class DashboardComponent implements OnInit {
         image.src = this.user.profilePic ;
       })
     } 
+  }
+  navToDetails(){
+    this.router.navigate(["/mydetails"]);
   }
   changeForm(index){
     this.form[index] = true;
@@ -109,6 +115,7 @@ export class DashboardComponent implements OnInit {
         }else{
           alert(res);
         }
+        this.OnInit();
       })
     }, 2000);
   }
@@ -124,7 +131,7 @@ export class DashboardComponent implements OnInit {
     })
   }
   approveWork(index){
-    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.experience.pending[index].employeeId,this.userRequests.experience.pending[index].companyname,"Approve",this.userRequests.experience.pending[index].remarks,this.userRequests.experience.pending[index].designation,this.userRequests.experience.pending[index].location,""+this.userRequests.experience.pending[index].yoj+"",this.userRequests.experience.pending[index].dor,""+this.userRequests.experience.pending[index].experience+"",""+this.userRequests.experience.pending[index].working+"",this.userRequests.experience.pending[index].RequestType]}
+    let formdata = {"fcn":"hypernymprocess","args":[this.userRequests.experience.pending[index].employeeId,this.userRequests.experience.pending[index].companyname,"Approve",this.userRequests.experience.pending[index].remarks,this.userRequests.experience.pending[index].designation,this.userRequests.experience.pending[index].location,this.userRequests.experience.pending[index].yoj,this.userRequests.experience.pending[index].dor,""+this.userRequests.experience.pending[index].experience+"",""+this.userRequests.experience.pending[index].working+"",this.userRequests.experience.pending[index].RequestType]}
     console.log(formdata);
     this.addUpdateService.addWorkDetailsToMain(formdata);
     setTimeout(function() {

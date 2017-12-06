@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ElementRef } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormBuilder,FormControl,FormArray, Validators } from '@angular/forms';
 import { UserInfoService } from "../user-info.service";
@@ -14,7 +14,10 @@ export class SearchInfoComponent implements OnInit {
   token:any;
   userName:any;
   searching = true;
-  constructor(public fb: FormBuilder,private userInfo: UserInfoService,private addOrUpdate: AddUpdateStudentDetailsService) {
+  isLoading:boolean = false;
+  userDetailsInNetwork:any=[];
+  searchInfo:boolean = true;
+  constructor(private element: ElementRef,public fb: FormBuilder,private userInfo: UserInfoService,private addOrUpdate: AddUpdateStudentDetailsService) {
     this.token = this.userInfo.getUserToken();
     console.log(this.token);
     this.addOrUpdate.setToken(this.token);
@@ -27,38 +30,33 @@ export class SearchInfoComponent implements OnInit {
   studentDetails = {};
   public searchForm = this.fb.group({
     uniqueId:["1",Validators.required],
-    channelName:["mychannel",Validators.required],
-    chaincodeName:["mycc",Validators.required],
-    chaincodeVersion:["v0",Validators.required],
-    peer1:["true",Validators.required],
-    peer2:["true",Validators.required],
-    peers:[[],Validators.required],
   });
 
-  setPeers(){
-    if(this.searchForm.controls.peer1.value == true && this.searchForm.controls.peer2.value != true  ){
-      this.searchForm.controls['peers'].setValue(['peer1']);
-    }else if(this.searchForm.controls.peer2.value == true  && this.searchForm.controls.peer1.value != true ){
-      this.searchForm.controls['peers'].setValue(['peer2']);
-    }else if(this.searchForm.controls.peer1.value == true && this.searchForm.controls.peer2.value == true  ){
-      this.searchForm.controls['peers'].setValue(['peer1','peer2']);
-    }
-  }
   searchDetails(event){
-    this.setPeers();
+    this.isLoading=true;
     console.log(this.searchForm.value)
-    let form = {"fcn":"getHistory","args":[""+this.searchForm.controls.uniqueId.value+""]}
-    this.addOrUpdate.isStudentExists(this.searchForm.value,form).subscribe(res =>{
+    this.userInfo.queryDetailsFromNetwork(this.searchForm.controls.uniqueId.value).subscribe(res =>{
       if(res.length <= 0){
         alert("No records Found");
       }else{
-        this.studentDetails = res[res.length-1].StudentDetails;
-        console.log(this.studentDetails);
+        this.userDetailsInNetwork = res[0].Details;
         this.searching = false;
+        console.log(this.userDetailsInNetwork);
+        setTimeout(()=>{
+          var image = this.element.nativeElement.querySelector('.image');
+          image.src = this.userDetailsInNetwork.profilePic ;
+        },500)
+        this.searchInfo = false;
+        this.isLoading=false;
       }
     })
   }
   search(){
+    this.searching = true;
+  }
+  FormSearch(){
+    this.userDetailsInNetwork = [];
+    this.searchInfo = true;
     this.searching = true;
   }
 }

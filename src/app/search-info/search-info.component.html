@@ -1,9 +1,9 @@
 <div class="container">
-  <div *ngIf="searching">
+  <div *ngIf="searchInfo">
     <form class="form-group" style="padding:10px 15%" [formGroup]="searchForm" (ngSubmit)="searchDetails($event)">
       <input class="form-control mr-sm-2" formControlName="uniqueId" type="text" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
       <small id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
-      <div class="row formDiv">
+      <!-- <div class="row formDiv">
         <div id="networkDetails" class="row">
           <input class="form-control col-sm-3 mr-sm-2 lr" formControlName="channelName" type="text" placeholder=" Channel Name " ><br>
           <input class="form-control col-sm-3 mr-sm-2 lr" formControlName="chaincodeName" type="text" placeholder=" Chaincode Name " ><br>
@@ -14,13 +14,27 @@
           <input type="checkbox" formControlName="peer1" value="peer1"> peer1 &nbsp;
           <input type="checkbox" formControlName="peer2" value="peer2"> peer2 <br><br>
         </div>
-      </div>
-      <div class="ll" *ngIf="studentDetails.StudentDetails === undefined">
-        <button class="btn btn-outline-info col-sm-3 decider" style="margin-left:30%" type="submit" > Search </button>
+      </div> -->
+
+      <div class="ll" *ngIf="!isLoading">
+        <button class="btn btn-outline-info col-sm-3 decider" style="margin-left:30%" type="submit" > <span>Search</span>
+        </button>
+      
       </div> 
+   
     </form>
+    <div *ngIf="isLoading" [ngClass]="isLoading === false?'':'overlay'">
+      <div [ngClass]="isLoading === false?'':'searching'">
+        <div [ngClass]="isLoading === false?'':'searching'">
+          <div [ngClass]="isLoading === false?'':'searching'"></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div *ngIf="!searching" class="col-sm-12">
+  <div class="left" *ngIf="!searchInfo">
+    <button class="btn btn-outline-info btn-sm" style="margin-left:-55px;max-width:6%"  (click)="FormSearch()"><i class="fa fa-chevron-left"> Back</i></button>
+  </div>
+ <!-- <div *ngIf="!searching" class="col-sm-12">
       <button class="btn btn-outline-success col-sm-3 decider" style="margin-left:70%" type="button" (click)="search()" > Search </button>
   </div>
   <div *ngIf="!searching">
@@ -31,7 +45,7 @@
       <tr><td><label>Age</label></td><td>:</td><td>{{studentDetails.DateOfBirth - 2017}}</td></tr>
       <tr><td><label>Gender</label></td><td>:</td><td>{{studentDetails.gender}}</td></tr>
     </table>
-    <table class="table table-bodered">
+    <table class="table table-bodered ts">
       <tr><td class="text-center edu" colspan="5">Education Details</td></tr>
       <tr class="heading"> <td>Degree</td><td>Board</td><td>College Name</td><td>Score</td><td>College Code</td></tr>
       <tr *ngFor="let edu of studentDetails.education" class="info">
@@ -44,14 +58,75 @@
 
       </tr>
     </table>
-    <table class="table table-bodered">
+    <table class="table table-bodered ts">
       <tr><td class="text-center edu" colspan="4">Work Details</td></tr>
       <tr class="heading"><td>Designation</td><td>Company</td><td>Location</td><td>Working From</td>      </tr>
       <tr  class="info">
          <td colspan="4"> Not Yet Working </td>
       </tr>
     </table>
-        
-    </div>
+    </div>-->
+    <div *ngIf="!searchInfo" style="margin-top:-30px">
+      <div class="row">
+        <div class="container row col-sm-4">
+          <div class="card" style="width:250px;margin-left:20%;">
+            <img class="card-img-top image" alt="User image" style="width:250px;height:250px">
+            <div class="card-body">
+              <h4 class="card-title">{{userDetailsInNetwork?.username}}</h4>
+              <h6 class="card-title">{{userDetailsInNetwork?.DateOfBirth | date}}</h6>
+              <h6 class="card-title">{{userDetailsInNetwork?.gender}}</h6>
+              <h6 class="card-title">{{userDetailsInNetwork?.profession}}</h6>
+              <h6 class="card-title">{{userDetailsInNetwork?.Email}}</h6>
+            </div>
+          </div>
+        </div>
+        <div class="container col-sm-7 tp">
+          <table class="table table-hover ts">
+              <thead class="ns" *ngIf="userDetailsInNetwork?.education != null">
+                  <tr class="heading"> <th> Degree </th><th>Institution</th><th>Location</th><th>Score</th><th>Passed Out Year</th></tr>
+              </thead>
+              <tbody class="as" *ngIf="userDetailsInNetwork?.education != null">
+                <tr  class="info" *ngFor="let edu of userDetailsInNetwork?.education">
+                    <td><span>{{edu.degree}}</span></td>
+                    <td><span>{{edu.Institute}}</span></td>
+                    <td>Hyderabad</td>
+                    <td><span>{{edu.score}}</span></td>
+                    <td><span>{{edu.yearOfPassout}}</span></td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="userDetailsInNetwork?.education == null">
+                <tr>
+                  <td> No Education details Added to Network.</td>
+                </tr>
+              </tbody>
+              
+          </table>
+        </div>
+        <div class="container col-sm-7 vf">
+            <table class="table table-hover ts">
+              <thead class="ns" *ngIf="userDetailsInNetwork?.experience != null">
+                  <tr class="heading"> <th> Designation </th><th>Oganisation</th><th>Location</th><th>Joining Year</th><th>Releaved data</th><th> Experience </th></tr>
+              </thead>
+              <tbody class="as" *ngIf="userDetailsInNetwork?.experience != null">
+                <tr  class="info" *ngFor = "let exp of userDetailsInNetwork?.experience">
+                    <td><span>{{exp.designation}}</span></td>
+                    <td><span>{{exp.organisation}}</span></td>
+                    <td>{{exp.Location}}</td>
+                    <td><span>{{exp.dateOfJoining | date}}</span></td>
+                    <td><span>{{exp.dateOfRelieving | date}}</span></td>
+                    <td style="table-layout:auto !important; "><span>{{exp.Experience}} Year/s</span></td>
+                   
+                </tr>
+              </tbody>
+              <tbody *ngIf="userDetailsInNetwork?.experience == null">
+                <tr>
+                  <td> No Working details Added to Network.</td>
+                </tr>
+              </tbody>
+              
+            </table>
+          </div>
+      </div>
+  </div>
   </div>
 
