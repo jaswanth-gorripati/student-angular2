@@ -156,15 +156,31 @@ export class RaiseRequestComponent implements OnInit {
       })*/
     }
   }
+  StudentIDToAdd:any;
   forAdminrequest(){
+    console.log(this.StudentIDToAdd);
     this.idFound = true;
-    this.addEduDetails = true;
-    this.isValidRequest = true;
+    this.userInfo.queryDetailsFromNetwork(this.StudentIDToAdd).subscribe(res =>{
+      if(res.length <= 0){
+        alert("No records Found For this id TRY AGAIN");
+      }else{
+        this.gotAddRequest = true;
+        this.addEduDetails = true;
+        this.isValidRequest = true;
+      }
+    })
   }
+  employeeIDtoAdd:any;
   forWorkAdminrequest(){
-    this.workIdFound = true;
-    this.addWorkDetailsForm = true;
-    this.isValidRequest = true;
+    this.userInfo.queryDetailsFromNetwork(this.employeeIDtoAdd).subscribe(res =>{
+      if(res.length <= 0){
+        alert("No records Found For this id TRY AGAIN");
+      }else{
+        this.workIdFound = true;
+        this.addWorkDetailsForm = true;
+        this.isValidRequest = true;
+      }
+    })
   }
   gotUpdateRequest = false;
   updateEduIndexes:any;

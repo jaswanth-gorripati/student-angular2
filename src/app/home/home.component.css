@@ -23,3 +23,89 @@
 main{
     overflow-x: hidden;
 }
+.fixed-bg{
+    background-image:url(https://media-exp1.licdn.com/mpr/mpr/AAEAAQAAAAAAAAvsAAAAJDA2ZDQ0ZWVmLWEyYzEtNDAxZC1iNGZmLWZkYjhhZGRiODRkMQ.jpg);
+    min-height: 680px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
+    overflow: hidden;
+  }
+.fixed-bg div{
+    opacity: 1;
+    margin-top: 7%;
+    margin-left: 28%;
+    max-height:570px;
+}
+.fixed-bg form{
+    max-height: 470px;
+    overflow:auto;
+}
+.fixed-bg h2{
+    z-index: 99999;
+    margin-top:7%;
+}
+.aside{
+    margin-left: 20%
+}
+.fixed-bg form{
+    margin-top:5%;
+}
+.formDiv{
+    color: white;
+    margin: 10% 20% 0% 20%;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(7, 0, 16, 0.63);
+    box-shadow: 1px 1px 1px 1px;
+    height: auto;
+}
+/*.bgc{
+    background-color: rgba(7, 0, 16, 0.63);
+}
+.bgc div{
+    opacity: 1;
+    margin-top: 7%;
+    margin-left: 28%;
+    max-height:570px;
+}
+.bgc form{
+    max-height: 470px;
+    overflow:auto;
+}
+.bgc h2{
+    z-index: 99999;
+    margin-top:7%;
+}
+.aside{
+    margin-left: 20%
+}
+.bgc form{
+    margin-top:5%;
+}*/
+.formDiv div{
+    margin: 2% 0%;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(64, 66, 100); 
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    width: 16px;
+    background: #0c295c; 
+}

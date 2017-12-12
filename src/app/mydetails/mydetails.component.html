@@ -15,7 +15,7 @@
   <div class="container col-sm-7 tp">
     <table class="table table-hover ts">
         <thead class="ns" *ngIf="userDetailsInNetwork?.education != null">
-            <tr class="heading"> <th> Degree </th><th>Institution</th><th>Location</th><th>Score</th><th>Passed Out Year</th><th> Actions </th></tr>
+            <tr class="heading"> <th> Degree </th><th>Institution</th><th>Location</th><th>Score</th><th>Passed Out Year</th></tr>
         </thead>
         <tbody class="as" *ngIf="userDetailsInNetwork?.education != null">
           <tr  class="info" *ngFor="let edu of userDetailsInNetwork?.education">
@@ -24,7 +24,7 @@
               <td>Hyderabad</td>
               <td><span>{{edu.score}}</span></td>
               <td><span>{{edu.yearOfPassout}}</span></td>
-              <td><button class="btn btn-outline-info btn-sm"> Update </button></td>
+              <!--<td><button class="btn btn-outline-info btn-sm"> Update </button></td>-->
           </tr>
         </tbody>
         <tbody *ngIf="userDetailsInNetwork?.education == null">
@@ -38,7 +38,7 @@
   <div class="container col-sm-7 vf" *ngIf="accountType == 'employee'">
       <table class="table table-hover ts">
         <thead class="ns" *ngIf="userDetailsInNetwork?.experience != null">
-            <tr class="heading"> <th> Designation </th><th>Oganisation</th><th>Location</th><th>Joining Year</th><th>Releaved data</th><th> Experience </th><th> Actions </th></tr>
+            <tr class="heading"> <th> Designation </th><th>Oganisation</th><th>Location</th><th>Joining Year</th><th>Releaved data</th><th> Experience </th></tr>
         </thead>
         <tbody class="as" *ngIf="userDetailsInNetwork?.experience != null">
           <tr  class="info" *ngFor = "let exp of userDetailsInNetwork?.experience">
@@ -48,7 +48,7 @@
               <td><span>{{exp.dateOfJoining | date}}</span></td>
               <td><span>{{exp.dateOfRelieving | date}}</span></td>
               <td style="table-layout:auto !important; "><span>{{exp.Experience}} Year/s</span></td>
-              <td><button class="btn btn-outline-info btn-sm" > Update </button></td>
+              <!--<td><button class="btn btn-outline-info btn-sm" > Update </button></td>-->
           </tr>
         </tbody>
         <tbody *ngIf="userDetailsInNetwork?.experience == null">

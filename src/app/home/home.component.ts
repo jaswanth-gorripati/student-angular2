@@ -93,7 +93,10 @@ clearFiles(){
     console.log(event);
     this.userInfo.enrollUSer(this.loginForm.value).subscribe(res => {
       console.log(res);
-      if(res.success){
+      if(res.attrs == undefined){
+        alert("enrolment failed try again or register user")
+      }
+      if(res.success && res.attrs!=undefined){
         this.userInfo.setUser(res,this.loginForm.controls.username.value,this.loginForm.controls.orgName.value);
         console.log(this.userInfo.getUserToken());
         this.messageEvent.emit(true);

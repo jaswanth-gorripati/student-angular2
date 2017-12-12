@@ -97,6 +97,61 @@ export class DashboardComponent implements OnInit {
       return true;
     }
   }
+  requestPasssed:any = [0,0,0];
+  noPendingRequests(){
+    if(this.requestPasssed[0] == 0){
+      if(this.accounType == 'student'){
+        this.requestPasssed[0]==1;
+        if(this.userRequests.education.pending.length == 0){
+          return true;
+        }
+        else 
+          return false;
+      }else if(this.accounType == 'employee'){
+        this.requestPasssed[0]==1;
+        if(this.userRequests.education.pending.length == 0 && this.userRequests.experience.pending.length == 0){
+          return true;
+        }else
+          return false;
+      }
+    }
+  }
+  noApprovedRequests(){
+    if(this.accounType == 'student'){
+      if(this.requestPasssed[1] == 0){
+        this.requestPasssed[1] == 1
+        if(this.userRequests.education.approved.length == 0){
+          return true;
+        }
+        else 
+          return false;
+      }else if(this.accounType == 'employee'){
+        this.requestPasssed[1] == 1
+        if(this.userRequests.education.approved.length == 0 && this.userRequests.experience.approved.length == 0){
+          return true;
+        }else
+          return false;
+      }
+      }
+  }
+  noRejectedRequests(){
+    if(this.requestPasssed[2]==0){
+      if(this.accounType == 'student'){
+        this.requestPasssed[2] == 1
+        if(this.userRequests.education.rejected.length == 0){
+          return true;
+        }
+        else 
+          return false;
+      }else if(this.accounType == 'employee'){
+        this.requestPasssed[2] == 1
+        if(this.userRequests.education.rejected.length == 0 && this.userRequests.experience.rejected.length == 0){
+          return true;
+        }else
+          return false;
+      }
+    }
+  }
   adminRightsInfo(){
     if(this.accounType == 'student' || this.accounType == 'employee'){
       return false;

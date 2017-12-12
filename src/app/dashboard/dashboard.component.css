@@ -19,9 +19,10 @@ table{
 .heading{
     font-weight: bold;
     overflow: hidden;
+    background-color: grey;
 }
 .heading:hover{
-    background-color:#fff;
+    background-color:grey;
 }
 .info{
     font-family: cursive;
@@ -29,6 +30,9 @@ table{
 .tp{
     max-height: 400px;
     overflow: auto
+}
+table{
+    box-shadow: 1px 1px 1px 1px;
 }
 .table td, .table th{
     padding:.6rem .4rem;

@@ -1,49 +1,20 @@
 <main role="main">
   
         <!-- Main jumbotron for a primary marketing message or call to action -->
-        <div class="row" *ngIf="login">
-          <div class="jumbotron col-sm-9" style="margin-left:1rem">
-            <div class="container">
-              <h1 class="display-3">Get Students Information </h1>
-              <p>This is a template for a simple blockchain example for demosttrating the open ledger student information</p>
-              <p></p>
-            </div>
-          </div>
-          <div id="myDIV" *ngIf="login" >
-            <h2 class="text-center" style="color:rgb(53, 49, 70);text-shadow: 1px 1px 1px  blue;font-family:cursive">Login</h2><hr>
+        <div class="fixed-bg">
+          <!--<div class="col-sm-12 bgc">-->
+          <div id="loginForm"  class="col-sm-5 formDiv" *ngIf="login" style="margin-top:100px;" >
+            <h2 class="text-center" style="color:rgb(255, 255, 255);text-shadow: 1px 1px 1px  rgb(255, 255, 255);font-family:cursive">Login</h2><hr>
             <form class="form-group" style="padding:10px" [formGroup]="loginForm" (ngSubmit)="enroll($event)">
-              <input class="form-control mr-sm-2" formControlName="username" autofocus type="text" placeholder=" Username" required><br>
+              <input class="form-control mr-sm-2" formControlName="username" type="text" placeholder=" Username" required><br>
               <input class="form-control mr-sm-2" formControlName="passkey" type="password" placeholder=" Password" required><br>
               <input class="form-control mr-sm-2" formControlName="orgName" type="text" placeholder=" Org Name" required><br>
-              <button class="btn btn-outline-success col-sm-12" type="submit" [disabled]="loginForm.invalid" >Enroll into Network</button><br><br>
+              <button class="btn btn-outline-info col-sm-6 aside" type="submit" [disabled]="loginForm.invalid" >Enroll into Network</button><br><br>
               <span>Not registered... <a href="#" (click)="login = false" style="font-family:cursive">Register Here</a></span>
             </form>
-          </div>
-        </div>  
-        <div class="container" *ngIf="login">
-          <!-- Example row of columns -->
-          <div class="row">
-            <div class="col-md-4">
-              <h2>Documentation</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-            </div>
-            <div class="col-md-4">
-              <h2>About</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-            </div>
-            <div class="col-md-4">
-              <h2>Heading</h2>
-              <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-              <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-            </div>
-          </div>
-  
-          <hr>
-  
-        </div> <!-- /container -->
-        <div *ngIf="!login" style="margin:0 20%;padding:20px;border-radius:10px;background-color:rgba(189, 183, 183, 0.336);box-shadow:2px 2px 2px;height:auto">
+          </div> 
+       
+        <div id="register" *ngIf="!login" class="formDiv" >
           <h3 class="text-center"> Registration </h3>
           <form class="form-group" style="padding:10px" [formGroup]="registerForm" (ngSubmit)="register($event)">
             <label for="uniqueID">UniqueID</label>
@@ -65,7 +36,7 @@
                   <input class="col-sm-5" id="gender" formControlName="gender" name="gender" value="male" autofocus type="radio"> Male &nbsp;&nbsp;&nbsp;
                   <input class="col-sm-5" id="gender"  formControlName="gender" name="gender" value="female"  autofocus type="radio" > Female<br><br>
                   <button class="btn btn-secondary" type="button" (click)="showFiles()"> Upload Profile Photo<input style="display:none" id="file" type="file" (change)="changeListner($event)" accept=".jpg,.png" /></button>&nbsp;&nbsp;
-                  <img class="image" style="height:40px" />
+                  <img class="image" style="height:40px;margin:-10px;" />
               </div>
                 
             </div>
@@ -106,8 +77,10 @@
               <label for="position">Position</label>
               <input formControlName="position" id="position" class="form-control mr-sm-5" type="text" placeholder=" Your Designation"><br>
             </div>
-            <button class="btn btn-outline-success col-sm-12" type="submit"  [disabled]="registerForm.invalid">Register into Network</button><br><br>
-            <span>Already registered... <a href="#" (click)="login = true" style="font-family:cursive">Login Here</a></span>
+            <button class="btn btn-outline-info col-sm-6 aside" type="submit"  [disabled]="registerForm.invalid">Register into Network</button><br><br>
+            <span>Already registered... <a  (click)="login = true" style="font-family:cursive"><span style="color:blue;text-decorator:line;cursor:pointer">Login Here</span></a></span>
           </form>
         </div>
+        </div>
+      <!--</div>-->
       </main>

@@ -4,12 +4,12 @@
       <label *ngIf="forSE()" (click)="updateRequest()" [ngClass]="{'active':gotUpdateRequest}">Update Education Details</label>
       <label *ngIf="forSEE()" (click)="addWorkRequest()" [ngClass]="{'active':gotExpAddRequest}">Add Work Information</label>
       <label *ngIf="accountType == 'employee'" (click)="updateWorkRequest()" [ngClass]="{'active':gotExpUpdateRequest}">Update Working Information</label>
-      <label (click)="editProfile()" [ngClass]="{'active':personalUpdate}">Update Personal Information</label>
+      <!--<label (click)="editProfile()" [ngClass]="{'active':personalUpdate}">Update Personal Information</label>-->
     </div>
     <div class="col-sm-1"></div>
     <div class="contentDivs col-sm-6" *ngIf="forms[0]">  
       <div class="form-group"   *ngIf="forAdmins()">
-        <input class="form-control mr-sm-2" type="text" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
+        <input class="form-control mr-sm-2" type="text" [(ngModel)]="StudentIDToAdd" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
         <small id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
         <div class="ll" *ngIf="!isValidRequest && (!gotUpdateRequest || !gotAddRequest) ">
           <button class="btn btn-outline-info col-sm-4 decider" (click)="forAdminrequest()"  type="submit" >Add details</button>
@@ -66,7 +66,7 @@
               </div>
            </div>
            <div class="margin-20" style="color:blue;" *ngIf="addForm.controls.education.controls.length < 3 && !gotUpdateRequest">
-              <a (click)="addEdu()" style="cursor: pointer">
+              <a (click)="addEdu()" style="cursor: pointer" *ngIf="forSE()">
                   <h4 style="display:inline">+</h4>  Add more Education Details 
               </a>
             </div>
@@ -82,7 +82,7 @@
     </div>
     <div class="contentDivs col-sm-6" *ngIf="forms[1]">
         <div class="form-group"   *ngIf="workIdFound == false">
-            <input *ngIf="forWorkAdmins()" class="form-control mr-sm-2" type="text" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
+            <input *ngIf="forWorkAdmins()" [(ngModel)]="employeeIDtoAdd" class="form-control mr-sm-2" type="text" placeholder=" Enter Student Unique ID" aria-describedby="passHelp">
             <small *ngIf="forWorkAdmins()" id="passHelp" class="form-text text-muted">Make sure unique id is of desired candidate</small>
             <div class="ll" *ngIf="!isValidRequest && (!gotExpUpdateRequest || !gotExpAddRequest) ">
               <button class="btn btn-outline-info col-sm-4 decider" *ngIf="forWorkAdmins()" (click)="forWorkAdminrequest()"  type="submit" >Add details</button>
